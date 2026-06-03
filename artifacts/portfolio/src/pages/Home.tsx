@@ -11,7 +11,7 @@ import {
   ChevronUp, Copy, Check, Zap, Award
 } from "lucide-react";
 import { 
-  SiReact, SiNodedotjs, SiGithub, SiLinkedin, 
+  SiReact, SiNodedotjs, SiGithub, SiLinkedin, SiInstagram,
   SiCplusplus, SiPython, SiJavascript, SiHtml5
 } from "react-icons/si";
 
@@ -295,6 +295,22 @@ const Navbar = () => {
                 <p className="text-white font-medium text-sm">chirag-verma-cse</p>
               </div>
               <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-primary group-hover:translate-x-1 transition-all ml-auto" />
+            </a>
+
+            <a
+              href="https://www.instagram.com/chirag.vermaa"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-pink-500/40 hover:bg-pink-500/5 transition-all group"
+            >
+              <div className="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-pink-500/20 transition-colors">
+                <SiInstagram className="w-4 h-4 text-pink-400" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 mb-0.5">Instagram</p>
+                <p className="text-white font-medium text-sm">@chirag.vermaa</p>
+              </div>
+              <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-pink-400 group-hover:translate-x-1 transition-all ml-auto" />
             </a>
 
             <a
@@ -851,6 +867,9 @@ export default function Home() {
                     <a href="https://www.linkedin.com/in/chirag-verma-cse" target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center border border-white/10 hover:border-primary hover:text-primary transition-all hover:-translate-y-1">
                       <Linkedin className="w-4 h-4" />
                     </a>
+                    <a href="https://www.instagram.com/chirag.vermaa" target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center border border-white/10 hover:border-pink-400 hover:text-pink-400 transition-all hover:-translate-y-1">
+                      <SiInstagram className="w-4 h-4" />
+                    </a>
                   </div>
                 </div>
               </div>
@@ -891,6 +910,7 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-6">
               <a href="https://www.linkedin.com/in/chirag-verma-cse" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-primary transition-colors text-sm font-mono">LinkedIn</a>
+              <a href="https://www.instagram.com/chirag.vermaa" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-pink-400 transition-colors text-sm font-mono">Instagram</a>
               <a href="mailto:chiragverma344@gmail.com" className="text-gray-500 hover:text-primary transition-colors text-sm font-mono">Email</a>
               <a href="/resume.pdf" download="Chirag_Verma_Resume.pdf" className="text-gray-500 hover:text-primary transition-colors text-sm font-mono">Resume</a>
             </div>
