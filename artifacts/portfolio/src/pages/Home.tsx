@@ -468,7 +468,7 @@ export default function Home() {
                     </div>
                     
                     <div className="flex items-center gap-4 mt-auto pt-4 border-t border-white/5">
-                      <a href="https://linkedin.com/in/chirag-verma" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 text-sm font-medium">
+                      <a href="https://www.linkedin.com/in/chirag-verma-cse" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 text-sm font-medium">
                         <Linkedin className="w-4 h-4" /> LinkedIn
                       </a>
                       <a href={project.demo} className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 text-sm font-medium ml-auto">
@@ -553,7 +553,7 @@ export default function Home() {
                   </a>
                   
                   <div className="flex items-center gap-4 pt-4">
-                    <a href="https://linkedin.com/in/chirag-verma" target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center border border-white/10 hover:border-primary hover:text-primary transition-all hover:-translate-y-1">
+                    <a href="https://www.linkedin.com/in/chirag-verma-cse" target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center border border-white/10 hover:border-primary hover:text-primary transition-all hover:-translate-y-1">
                       <Linkedin className="w-4 h-4" />
                     </a>
                   </div>
