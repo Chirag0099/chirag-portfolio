@@ -8,7 +8,7 @@ import {
   Terminal, Code2, Cpu, ExternalLink,
   Linkedin, Mail, ArrowRight, Download, Menu, X,
   Briefcase, GraduationCap, MapPin, Phone,
-  ChevronUp, Copy, Check, Zap, Award
+  ChevronUp, Copy, Check, Zap, Award, Share2
 } from "lucide-react";
 import { 
   SiReact, SiNodedotjs, SiGithub, SiLinkedin, SiInstagram,
@@ -413,6 +413,7 @@ const SectionHeading = ({ children, align = "left" }: { children: React.ReactNod
 export default function Home() {
   const { toast } = useToast();
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -425,6 +426,18 @@ export default function Home() {
     setCopiedEmail(true);
     toast({ title: "Copied!", description: "Email address copied to clipboard." });
     setTimeout(() => setCopiedEmail(false), 2500);
+  }, [toast]);
+
+  const shareProfile = useCallback(async () => {
+    const url = window.location.href;
+    const shareData = { title: 'Chirag Verma — Portfolio', text: 'Check out Chirag Verma\'s developer portfolio!', url };
+    if (navigator.share && navigator.canShare?.(shareData)) {
+      try { await navigator.share(shareData); return; } catch {}
+    }
+    await navigator.clipboard.writeText(url);
+    setCopiedLink(true);
+    toast({ title: "Link copied!", description: "Portfolio URL copied to clipboard." });
+    setTimeout(() => setCopiedLink(false), 2500);
   }, [toast]);
 
   return (
@@ -488,6 +501,13 @@ export default function Home() {
                   <Download className="mr-2 h-4 w-4" /> Download Resume
                 </a>
               </Button>
+              <button
+                onClick={shareProfile}
+                title="Share portfolio"
+                className="w-12 h-12 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 hover:border-primary/50 flex items-center justify-center transition-all hover:-translate-y-1 text-gray-400 hover:text-primary"
+              >
+                {copiedLink ? <Check className="w-4 h-4 text-green-400" /> : <Share2 className="w-4 h-4" />}
+              </button>
             </div>
           </motion.div>
 
