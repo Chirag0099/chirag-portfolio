@@ -22,12 +22,22 @@ import chiragPhoto from "@assets/chirag_nobg.png";
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [hireOpen, setHireOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (hireOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [hireOpen]);
 
   const scrollTo = (id: string) => {
     setMobileMenuOpen(false);
@@ -38,6 +48,7 @@ const Navbar = () => {
   };
 
   return (
+    <>
     <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${scrolled ? "glass py-4" : "py-6 bg-transparent"}`}>
       <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
         <a href="#" className="font-display font-bold text-xl tracking-wider text-white" onClick={(e) => { e.preventDefault(); scrollTo('hero'); }}>
@@ -51,6 +62,7 @@ const Navbar = () => {
               key={item} 
               onClick={() => scrollTo(item.toLowerCase())}
               className="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group"
+              data-testid={`nav-${item.toLowerCase()}`}
             >
               {item}
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
@@ -59,7 +71,8 @@ const Navbar = () => {
           <Button 
             variant="outline" 
             className="border-primary/50 text-primary hover:bg-primary/10 hover:text-primary transition-all ml-4"
-            onClick={() => scrollTo('contact')}
+            onClick={() => setHireOpen(true)}
+            data-testid="button-hire-me"
           >
             Hire Me
           </Button>
@@ -86,13 +99,126 @@ const Navbar = () => {
           <Button 
             variant="outline" 
             className="border-primary/50 text-primary hover:bg-primary/10 w-full mt-4"
-            onClick={() => scrollTo('contact')}
+            onClick={() => { setMobileMenuOpen(false); setHireOpen(true); }}
           >
             Hire Me
           </Button>
         </div>
       )}
     </header>
+
+    {/* HIRE ME MODAL */}
+    {hireOpen && (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        onClick={(e) => { if (e.target === e.currentTarget) setHireOpen(false); }}
+      >
+        {/* Backdrop */}
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+
+        {/* Modal */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.92, y: 20 }}
+          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          className="relative w-full max-w-md bg-[#0a0a14] border border-white/10 rounded-2xl p-8 shadow-[0_0_80px_rgba(255,0,92,0.12)]"
+          data-testid="modal-hire-me"
+        >
+          {/* Close */}
+          <button
+            onClick={() => setHireOpen(false)}
+            className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors p-1"
+            data-testid="button-close-modal"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          {/* Header */}
+          <div className="mb-6">
+            <span className="text-xs font-mono text-primary tracking-widest uppercase">Available for opportunities</span>
+            <h2 className="font-display text-3xl font-bold text-white mt-2">Let's work<br/><span className="text-primary">together.</span></h2>
+            <p className="text-gray-400 text-sm mt-3 leading-relaxed">
+              I'm open to internships, freelance projects, and collaborations. Reach out through any channel below.
+            </p>
+          </div>
+
+          {/* Divider */}
+          <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-6" />
+
+          {/* Contact options */}
+          <div className="space-y-3 mb-6">
+            <a
+              href="mailto:chiragverma344@gmail.com"
+              className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-primary/40 hover:bg-primary/5 transition-all group"
+              data-testid="link-email"
+            >
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                <Mail className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 mb-0.5">Email</p>
+                <p className="text-white font-medium text-sm">chiragverma344@gmail.com</p>
+              </div>
+              <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-primary group-hover:translate-x-1 transition-all ml-auto" />
+            </a>
+
+            <a
+              href="https://www.linkedin.com/in/chirag-verma-cse"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-primary/40 hover:bg-primary/5 transition-all group"
+              data-testid="link-linkedin-modal"
+            >
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                <Linkedin className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 mb-0.5">LinkedIn</p>
+                <p className="text-white font-medium text-sm">chirag-verma-cse</p>
+              </div>
+              <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-primary group-hover:translate-x-1 transition-all ml-auto" />
+            </a>
+
+            <a
+              href="tel:+919039096970"
+              className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-primary/40 hover:bg-primary/5 transition-all group"
+              data-testid="link-phone-modal"
+            >
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                <Phone className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 mb-0.5">Phone</p>
+                <p className="text-white font-medium text-sm font-mono">+91 9039096970</p>
+              </div>
+              <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-primary group-hover:translate-x-1 transition-all ml-auto" />
+            </a>
+          </div>
+
+          {/* CTA */}
+          <a
+            href="mailto:chiragverma344@gmail.com?subject=Hiring Opportunity — Chirag Verma&body=Hi Chirag,%0A%0AI came across your portfolio and would love to connect about an opportunity.%0A%0A"
+            className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold transition-all hover:shadow-[0_0_30px_rgba(255,0,92,0.4)] active:scale-95"
+            data-testid="button-send-email"
+          >
+            <Mail className="w-4 h-4" />
+            Send me an Email
+          </a>
+
+          <a
+            href="/resume.pdf"
+            download
+            className="flex items-center justify-center gap-2 w-full py-3 mt-3 rounded-xl border border-white/10 text-gray-300 hover:text-white hover:border-white/30 text-sm font-medium transition-all"
+            data-testid="button-download-resume-modal"
+          >
+            <Download className="w-4 h-4" />
+            Download Resume
+          </a>
+        </motion.div>
+      </div>
+    )}
+    </>
   );
 };
 
