@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chirag Verma — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+<style>
+:root{--bg:#050408;--surface:#0d0b12;--card:#110e18;--border:#2a1a28;--wine:#96003c;--wine-glow:rgba(150,0,60,.22);--wine-soft:rgba(150,0,60,.12);--blush:#e8b4b8;--ash:#9a8fa0;--text:#ede0d4}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background-color:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--wine);border-radius:2px}
+.cursor-dot{width:6px;height:6px;background:#d94f6a;border-radius:50%;position:fixed;pointer-events:none;z-index:99999;transform:translate(-50%,-50%)}
+.cursor-ring{width:28px;height:28px;border:1px solid rgba(150,0,60,.7);border-radius:50%;position:fixed;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:all .12s ease}
+.glow-wine{text-shadow:0 0 30px rgba(150,0,60,.6),0 0 60px rgba(150,0,60,.3)}
+.text-wine-gradient{background:linear-gradient(135deg,#d94f6a 0%,#96003c 50%,#e8849a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.card-glass{background:rgba(17,14,24,.7);border:1px solid rgba(42,26,40,.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.section-title::after{content:'';display:block;width:48px;height:2px;background:linear-gradient(90deg,#96003c,#d94f6a);margin-top:10px;border-radius:1px}
+.blob-1{position:fixed;top:-200px;right:-200px;width:700px;height:700px;background:radial-gradient(ellipse,rgba(90,0,30,.18) 0%,transparent 65%);pointer-events:none;z-index:0;border-radius:50%;animation:blobDrift 20s ease-in-out infinite}
+.blob-2{position:fixed;bottom:-300px;left:-200px;width:800px;height:800px;background:radial-gradient(ellipse,rgba(60,0,20,.15) 0%,transparent 65%);pointer-events:none;z-index:0;border-radius:50%;animation:blobDrift 25s ease-in-out infinite reverse}
+@keyframes blobDrift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.05)}66%{transform:translate(-30px,20px) scale(.97)}}
+.clip-btn{clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)}
+.clip-chip{clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%)}
+.font-mono{font-family:'JetBrains Mono',monospace}
+.font-display{font-family:'Syne',sans-serif}
+.noise-overlay{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px}
+/* Sections */
+section{position:relative;padding:7rem 0}
+.max-w{max-width:1152px;margin:0 auto;padding:0 2rem}
+@media(min-width:1024px){.max-w{padding:0 4rem}}
+.divider{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(150,0,60,.3),transparent)}
+/* Navbar */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:all .5s ease;padding:1.25rem 0}
+nav.scrolled{padding:.75rem 0;background:rgba(8,6,16,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(150,0,60,.2);box-shadow:0 4px 30px rgba(0,0,0,.5)}
+.nav-inner{max-width:1152px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.nav-link{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.2em;color:var(--ash);background:none;border:none;cursor:none;transition:color .3s;position:relative;padding:.25rem 0}
+.nav-link:hover{color:var(--blush)}
+.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:linear-gradient(90deg,#96003c,#d94f6a);transition:width .3s}
+.nav-link:hover::after{width:100%}
+/* Hero */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.hero-grid{position:absolute;inset:0;opacity:.04;pointer-events:none}
+/* Skills bars */
+.skill-track{height:3px;width:100%;background:rgba(42,26,40,.9);border-radius:9999px;overflow:hidden}
+.skill-fill{height:100%;border-radius:9999px;background:linear-gradient(90deg,#5c0020,#96003c 50%,#d94f6a);box-shadow:0 0 10px rgba(150,0,60,.4);transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+/* Cards */
+.project-card{background:rgba(13,10,20,.75);border:1px solid rgba(42,26,40,.9);backdrop-filter:blur(10px);transition:all .35s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.project-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(150,0,60,.22),inset 0 0 0 1px rgba(150,0,60,.3)}
+/* Form */
+.form-input{width:100%;background:rgba(13,10,20,.7);border:1px solid rgba(42,26,40,.9);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.85rem;padding:.75rem 1rem;outline:none;transition:all .3s;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)}
+.form-input:focus{border-color:rgba(150,0,60,.6);background:rgba(150,0,60,.05)}
+.form-input::placeholder{color:rgba(154,143,160,.3)}
+textarea.form-input{resize:none}
+/* Timeline dot */
+.tl-dot{position:absolute;left:-21px;top:6px;width:10px;height:10px;border-radius:50%;border:1px solid #96003c;background:var(--card);transition:background .3s}
+.tl-item:hover .tl-dot{background:#96003c}
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes scrollDown{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(8px);opacity:.5}}
+.animate-fadeup{animation:fadeUp .8s cubic-bezier(.22,1,.36,1) forwards;opacity:0}
+.blink{animation:blink .55s infinite}
+/* Social link */
+.social-link{display:flex;align-items:center;gap:1rem;padding:1rem;border:1px solid rgba(42,26,40,.8);transition:all .3s;text-decoration:none;color:inherit}
+.social-link:hover{border-color:rgba(150,0,60,.5);background:rgba(150,0,60,.06);transform:translateX(6px)}
+/* Grid */
+.grid-2{display:grid;gap:4rem}
+.grid-3{display:grid;gap:1.5rem}
+@media(min-width:768px){.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.grid-2{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(3,1fr)}}
+/* Interests grid */
+.interests-grid{display:grid;gap:1rem;grid-template-columns:1fr}
+@media(min-width:480px){.interests-grid{grid-template-columns:1fr 1fr}}
+/* Footer */
+footer{border-top:1px solid rgba(42,26,40,.6);padding:2.5rem 0}
+.footer-inner{max-width:1152px;margin:0 auto;padding:0 1.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center}
+@media(min-width:640px){.footer-inner{flex-direction:row;justify-content:space-between;text-align:left}}
+/* Stat */
+.stat-val{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,#d94f6a,#96003c,#e8849a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+</style>
+</head>
+<body>
+
+<div class="blob-1"></div>
+<div class="blob-2"></div>
+<div class="noise-overlay"></div>
+
+<!-- Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" onclick="scrollTop(event)" style="text-decoration:none;display:flex;align-items:center;gap:.5rem;cursor:none">
+      <span class="text-wine-gradient font-display" style="font-size:1.25rem;font-weight:700">CV</span>
+      <span class="font-mono" style="font-size:.65rem;letter-spacing:.25em;color:var(--ash)">//&nbsp;CHIRAG</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:2rem">
+      <button class="nav-link" onclick="scrollTo('#about')"><span style="color:#96003c">./</span>About</button>
+      <button class="nav-link" onclick="scrollTo('#skills')"><span style="color:#96003c">./</span>Skills</button>
+      <button class="nav-link" onclick="scrollTo('#projects')"><span style="color:#96003c">./</span>Projects</button>
+      <button class="nav-link" onclick="scrollTo('#contact')"><span style="color:#96003c">./</span>Contact</button>
+      <button onclick="scrollTo('#contact')" style="font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.2em;padding:.5rem 1rem;border:1px solid rgba(150,0,60,.5);color:var(--blush);background:none;cursor:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:all .3s" onmouseover="this.style.background='rgba(150,0,60,.15)';this.style.borderColor='rgba(150,0,60,.8)'" onmouseout="this.style.background='none';this.style.borderColor='rgba(150,0,60,.5)'">Hire Me</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <svg class="hero-grid" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+        <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#96003c" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#grid)"/>
+  </svg>
+
+  <div class="max-w" style="position:relative;z-index:10;padding-top:8rem;padding-bottom:5rem">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:4rem;flex-wrap:wrap">
+
+      <!-- LEFT CONTENT -->
+      <div style="max-width:48rem;flex:1">
+
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
+          <span style="height:1px;width:2.5rem;background:linear-gradient(90deg,#96003c,#d94f6a)"></span>
+          <span class="font-mono" style="font-size:.65rem;letter-spacing:.3em;color:#d94f6a;text-transform:uppercase">
+            CSE Student · Developer
+          </span>
+        </div>
+
+        <h1 class="font-display"
+          style="font-size:clamp(3rem,10vw,5.5rem);font-weight:800;line-height:1;margin-bottom:.5rem">
+          <span style="color:var(--text)">Chirag</span><br/>
+          <span class="text-wine-gradient glow-wine">Verma</span>
+        </h1>
+
+        <div style="display:flex;align-items:center;gap:.5rem;margin:2rem 0;height:2rem">
+          <span class="font-mono" style="color:var(--ash)">&gt;_</span>
+          <span id="typed" style="color:var(--blush)"></span>
+        </div>
+
+        <p style="color:var(--ash);line-height:1.75;margin-bottom:2.5rem">
+          I build fast, scalable web apps and love solving real-world problems using clean code.
+        </p>
+
+        <!-- BUTTONS -->
+        <div style="display:flex;gap:1rem;flex-wrap:wrap">
+
+          <button class="clip-btn"
+            style="padding:.75rem 1.75rem;background:linear-gradient(135deg,#7a0030,#96003c);color:white;border:1px solid rgba(150,0,60,.4);transition:.3s"
+            onmouseover="this.style.boxShadow='0 0 30px rgba(150,0,60,.6)'"
+            onmouseout="this.style.boxShadow='none'">
+            View Projects
+          </button>
+
+          <a href="resume.pdf" download>
+            <button class="clip-btn"
+              style="padding:.75rem 1.75rem;border:1px solid rgba(150,0,60,.45);background:none;color:#d94f6a;transition:.3s"
+              onmouseover="this.style.background='rgba(150,0,60,.15)'"
+              onmouseout="this.style.background='none'">
+              Download Resume
+            </button>
+          </a>
+
+          <button class="clip-btn"
+            style="padding:.75rem 1.75rem;border:1px solid rgba(150,0,60,.45);background:none;color:#d94f6a;transition:.3s"
+            onmouseover="this.style.background='rgba(150,0,60,.15)'"
+            onmouseout="this.style.background='none'">
+            Contact Me
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT IMAGE -->
+      <div style="flex:1;display:flex;justify-content:center;position:relative">
+
+        <!-- GLOW -->
+        <div style="
+          position:absolute;
+          width:420px;
+          height:520px;
+          background: radial-gradient(circle, rgba(150,0,60,0.5), rgba(150,0,60,0.15), transparent);
+          filter: blur(90px);
+          z-index:0;
+        "></div>
+
+        <!-- IMAGE -->
+        <img src="myPic.png"
+          style="
+            width:340px;
+            height:430px;
+            object-fit:cover;
+            border-radius:14px;
+            box-shadow:0 40px 100px rgba(0,0,0,0.8);
+            position:relative;
+            z-index:1;
+            animation:float 6s ease-in-out infinite, pulse 6s ease-in-out infinite;
+            transition:transform .4s;
+          "
+          onmouseover="this.style.transform='scale(1.05)'"
+          onmouseout="this.style.transform='scale(1)'"
+        >
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ANIMATIONS -->
+<style>
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+</style>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="divider"></div>
+  <div class="max-w">
+    <div style="margin-bottom:4rem" class="reveal">
+      <p class="font-mono" style="font-size:.65rem;letter-spacing:.3em;color:#d94f6a;margin-bottom:.75rem">01. ABOUT</p>
+      <h2 class="font-display section-title" style="font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--text)">Who I Am</h2>
+    </div>
+    <div class="grid-2">
+      <!-- Left -->
+      <div class="reveal">
+        <p style="color:var(--ash);line-height:1.75;margin-bottom:1rem;font-weight:300">
+          Hey there — I'm <span style="color:var(--blush);font-weight:500">Chirag Verma</span>, a Computer Science student with a deep passion for building things on the web. I thrive at the intersection of logic and creativity.
+        </p>
+        <p style="color:var(--ash);line-height:1.75;margin-bottom:2.5rem;font-weight:300">
+          When I'm not pushing pixels or debugging code, you'll find me lifting at the gym, discovering new music, or down a rabbit hole learning something new.
+        </p>
+        <!-- Timeline -->
+        <div style="position:relative;padding-left:1.25rem">
+          <div style="position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,#96003c,rgba(150,0,60,.4),transparent)"></div>
+          <div class="tl-item" style="position:relative;margin-bottom:1.75rem">
+            <div class="tl-dot"></div>
+            <div style="display:flex;align-items:baseline;gap:.75rem;margin-bottom:.25rem">
+              <span class="font-mono" style="font-size:.65rem;color:#d94f6a;letter-spacing:.2em">2021</span>
+              <span class="font-display" style="font-size:.85rem;font-weight:600;color:var(--text)">Started B.Tech in CS</span>
+            </div>
+            <p style="font-size:.75rem;color:var(--ash);line-height:1.6;font-weight:300">Enrolled in CSE. Fell in love with programming from day one.</p>
+          </div>
+          <div class="tl-item" style="position:relative;margin-bottom:1.75rem">
+            <div class="tl-dot"></div>
+            <div style="display:flex;align-items:baseline;gap:.75rem;margin-bottom:.25rem">
+              <span class="font-mono" style="font-size:.65rem;color:#d94f6a;letter-spacing:.2em">2022</span>
+              <span class="font-display" style="font-size:.85rem;font-weight:600;color:var(--text)">First Web Project</span>
+            </div>
+            <p style="font-size:.75rem;color:var(--ash);line-height:1.6;font-weight:300">Built my first HTML/CSS website. Realized the web was limitless.</p>
+          </div>
+          <div class="tl-item" style="position:relative;margin-bottom:1.75rem">
+            <div class="tl-dot"></div>
+            <div style="display:flex;align-items:baseline;gap:.75rem;margin-bottom:.25rem">
+              <span class="font-mono" style="font-size:.65rem;color:#d94f6a;letter-spacing:.2em">2023</span>
+              <span class="font-display" style="font-size:.85rem;font-weight:600;color:var(--text)">Learned React & JS</span>
+            </div>
+            <p style="font-size:.75rem;color:var(--ash);line-height:1.6;font-weight:300">Deep-dived into modern frontend — hooks, routing, state management.</p>
+          </div>
+          <div class="tl-item" style="position:relative;margin-bottom:1.75rem">
+            <div class="tl-dot"></div>
+            <div style="display:flex;align-items:baseline;gap:.75rem;margin-bottom:.25rem">
+              <span class="font-mono" style="font-size:.65rem;color:#d94f6a;letter-spacing:.2em">2024</span>
+              <span class="font-display" style="font-size:.85rem;font-weight:600;color:var(--text)">DSA & Competitive Coding</span>
+            </div>
+            <p style="font-size:.75rem;color:var(--ash);line-height:1.6;font-weight:300">Solved 300+ problems in C++. Competed in college hackathons.</p>
+          </div>
+          <div class="tl-item" style="position:relative">
+            <div class="tl-dot"></div>
+            <div style="display:flex;align-items:baseline;gap:.75rem;margin-bottom:.25rem">
+              <span class="font-mono" style="font-size:.65rem;color:#d94f6a;letter-spacing:.2em">2025</span>
+              <span class="font-display" style="font-size:.85rem;font-weight:600;color:var(--text)">Building & Growing</span>
+            </div>
+            <p style="font-size:.75rem;color:var(--ash);line-height:1.6;font-weight:300">Working on personal projects, learning backend, aiming for internships.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Right: interest cards -->
+      <div class="interests-grid reveal">
+        <div class="card-glass interest-card" style="padding:1.25rem;border-radius:2px;cursor:default">
+          <div style="font-size:1.5rem;margin-bottom:.75rem">💻</div>
+          <h3 class="font-display" style="font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.5rem">Coding</h3>
+          <p style="font-size:.75rem;color:var(--ash);line-height:1.6;font-weight:300">Building projects that solve real problems — from web apps to CLI tools.</p>
+        </div>
+        <div class="card-glass interest-card" style="padding:1.25rem;border-radius:2px;cursor:default">
+          <div style="font-size:1.5rem;margin-bottom:.75rem">🏋️</div>
+          <h3 class="font-display" style="font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.5rem">Gym</h3>
+          <p style="font-size:.75rem;color:var(--ash);line-height:1.6;font-weight:300">Consistency in the gym mirrors the discipline needed in software.</p>
+        </div>
+        <div class="card-glass interest-card" style="padding:1.25rem;border-radius:2px;cursor:default">
+          <div style="font-size:1.5rem;margin-bottom:.75rem">🎵</div>
+          <h3 class="font-display" style="font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.5rem">Music</h3>
+          <p style="font-size:.75rem;color:var(--ash);line-height:1.6;font-weight:300">Music fuels focus — from lo-fi while coding to post-session rock.</p>
+        </div>
+        <div class="card-glass interest-card" style="padding:1.25rem;border-radius:2px;cursor:default">
+          <div style="font-size:1.5rem;margin-bottom:.75rem">📚</div>
+          <h3 class="font-display" style="font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.5rem">Learning</h3>
+          <p style="font-size:.75rem;color:var(--ash);line-height:1.6;font-weight:300">Always reading, always growing — CS papers, tutorials, new tech.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="divider"></div>
+  <div class="max-w">
+    <div style="margin-bottom:4rem" class="reveal">
+      <p class="font-mono" style="font-size:.65rem;letter-spacing:.3em;color:#d94f6a;margin-bottom:.75rem">02. SKILLS</p>
+      <h2 class="font-display section-title" style="font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--text)">My Toolkit</h2>
+    </div>
+    <div class="grid-2">
+      <!-- Bars -->
+      <div class="reveal">
+        <p class="font-mono" style="font-size:.65rem;letter-spacing:.25em;color:var(--ash);margin-bottom:2rem;text-transform:uppercase">Core Technologies</p>
+        <div style="display:flex;flex-direction:column;gap:1.75rem" id="skillBars">
+          <div class="skill-item">
+            <div style="display:flex;justify-content:space-between;margin-bottom:.5rem">
+              <span class="font-mono" style="font-size:.85rem;font-weight:500;color:var(--text)">C++</span>
+              <span class="font-mono" style="font-size:.7rem;color:#d94f6a">82%</span>
+            </div>
+            <div class="skill-track"><div class="skill-fill" style="width:0" data-w="82%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div style="display:flex;justify-content:space-between;margin-bottom:.5rem">
+              <span class="font-mono" style="font-size:.85rem;font-weight:500;color:var(--text)">HTML</span>
+              <span class="font-mono" style="font-size:.7rem;color:#d94f6a">95%</span>
+            </div>
+            <div class="skill-track"><div class="skill-fill" style="width:0" data-w="95%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div style="display:flex;justify-content:space-between;margin-bottom:.5rem">
+              <span class="font-mono" style="font-size:.85rem;font-weight:500;color:var(--text)">CSS</span>
+              <span class="font-mono" style="font-size:.7rem;color:#d94f6a">88%</span>
+            </div>
+            <div class="skill-track"><div class="skill-fill" style="width:0" data-w="88%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div style="display:flex;justify-content:space-between;margin-bottom:.5rem">
+              <span class="font-mono" style="font-size:.85rem;font-weight:500;color:var(--text)">JavaScript</span>
+              <span class="font-mono" style="font-size:.7rem;color:#d94f6a">80%</span>
+            </div>
+            <div class="skill-track"><div class="skill-fill" style="width:0" data-w="80%"></div></div>
+          </div>
+          <div class="skill-item">
+            <div style="display:flex;justify-content:space-between;margin-bottom:.5rem">
+              <span class="font-mono" style="font-size:.85rem;font-weight:500;color:var(--text)">React</span>
+              <span class="font-mono" style="font-size:.7rem;color:#d94f6a">75%</span>
+            </div>
+            <div class="skill-track"><div class="skill-fill" style="width:0" data-w="75%"></div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Tools + code snippet -->
+      <div class="reveal">
+        <p class="font-mono" style="font-size:.65rem;letter-spacing:.25em;color:var(--ash);margin-bottom:2rem;text-transform:uppercase">Also Familiar With</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:2.5rem">
+          <span class="font-mono clip-chip" style="font-size:.65rem;letter-spacing:.15em;color:var(--ash);border:1px solid rgba(42,26,40,.9);padding:.4rem .75rem;cursor:default;transition:all .25s" onmouseover="this.style.borderColor='rgba(150,0,60,.7)';this.style.color='var(--blush)'" onmouseout="this.style.borderColor='rgba(42,26,40,.9)';this.style.color='var(--ash)'">Git &amp; GitHub</span>
+          <span class="font-mono clip-chip" style="font-size:.65rem;letter-spacing:.15em;color:var(--ash);border:1px solid rgba(42,26,40,.9);padding:.4rem .75rem;cursor:default;transition:all .25s" onmouseover="this.style.borderColor='rgba(150,0,60,.7)';this.style.color='var(--blush)'" onmouseout="this.style.borderColor='rgba(42,26,40,.9)';this.style.color='var(--ash)'">VS Code</span>
+          <span class="font-mono clip-chip" style="font-size:.65rem;letter-spacing:.15em;color:var(--ash);border:1px solid rgba(42,26,40,.9);padding:.4rem .75rem;cursor:default;transition:all .25s" onmouseover="this.style.borderColor='rgba(150,0,60,.7)';this.style.color='var(--blush)'" onmouseout="this.style.borderColor='rgba(42,26,40,.9)';this.style.color='var(--ash)'">Linux</span>
+          <span class="font-mono clip-chip" style="font-size:.65rem;letter-spacing:.15em;color:var(--ash);border:1px solid rgba(42,26,40,.9);padding:.4rem .75rem;cursor:default;transition:all .25s" onmouseover="this.style.borderColor='rgba(150,0,60,.7)';this.style.color='var(--blush)'" onmouseout="this.style.borderColor='rgba(42,26,40,.9)';this.style.color='var(--ash)'">Tailwind CSS</span>
+          <span class="font-mono clip-chip" style="font-size:.65rem;letter-spacing:.15em;color:var(--ash);border:1px solid rgba(42,26,40,.9);padding:.4rem .75rem;cursor:default;transition:all .25s" onmouseover="this.style.borderColor='rgba(150,0,60,.7)';this.style.color='var(--blush)'" onmouseout="this.style.borderColor='rgba(42,26,40,.9)';this.style.color='var(--ash)'">Figma Basics</span>
+          <span class="font-mono clip-chip" style="font-size:.65rem;letter-spacing:.15em;color:var(--ash);border:1px solid rgba(42,26,40,.9);padding:.4rem .75rem;cursor:default;transition:all .25s" onmouseover="this.style.borderColor='rgba(150,0,60,.7)';this.style.color='var(--blush)'" onmouseout="this.style.borderColor='rgba(42,26,40,.9)';this.style.color='var(--ash)'">npm / Node</span>
+          <span class="font-mono clip-chip" style="font-size:.65rem;letter-spacing:.15em;color:var(--ash);border:1px solid rgba(42,26,40,.9);padding:.4rem .75rem;cursor:default;transition:all .25s" onmouseover="this.style.borderColor='rgba(150,0,60,.7)';this.style.color='var(--blush)'" onmouseout="this.style.borderColor='rgba(42,26,40,.9)';this.style.color='var(--ash)'">REST APIs</span>
+          <span class="font-mono clip-chip" style="font-size:.65rem;letter-spacing:.15em;color:var(--ash);border:1px solid rgba(42,26,40,.9);padding:.4rem .75rem;cursor:default;transition:all .25s" onmouseover="this.style.borderColor='rgba(150,0,60,.7)';this.style.color='var(--blush)'" onmouseout="this.style.borderColor='rgba(42,26,40,.9)';this.style.color='var(--ash)'">Problem Solving</span>
+        </div>
+        <!-- Code snippet -->
+        <div class="card-glass" style="padding:1.25rem;border-radius:2px">
+          <div style="display:flex;gap:.5rem;margin-bottom:1rem">
+            <span style="width:10px;height:10px;border-radius:50%;background:#5c0020"></span>
+            <span style="width:10px;height:10px;border-radius:50%;background:#96003c"></span>
+            <span style="width:10px;height:10px;border-radius:50%;background:#d94f6a"></span>
+          </div>
+          <pre class="font-mono" style="font-size:.75rem;line-height:1.7;color:var(--ash)"><span style="color:#d94f6a">const</span> <span style="color:var(--blush)">chirag</span> <span style="color:var(--ash)">= {</span>
+  <span style="color:var(--ash)">passion:</span> <span style="color:var(--text)">"software"</span><span style="color:var(--ash)">,</span>
+  <span style="color:var(--ash)">status:</span>  <span style="color:var(--text)">"open to work"</span><span style="color:var(--ash)">,</span>
+  <span style="color:var(--ash)">focus:</span>   <span style="color:var(--text)">"full-stack dev"</span><span style="color:var(--ash)">,</span>
+  <span style="color:var(--ash)">coffee:</span>  <span style="color:#d94f6a">true</span>
+<span style="color:var(--ash)">}</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="divider"></div>
+  <div class="max-w">
+    <div style="margin-bottom:4rem" class="reveal">
+      <p class="font-mono" style="font-size:.65rem;letter-spacing:.3em;color:#d94f6a;margin-bottom:.75rem">03. PROJECTS</p>
+      <h2 class="font-display section-title" style="font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--text)">Things I've Built</h2>
+      <p style="margin-top:1.25rem;color:var(--ash);font-size:.9rem;font-weight:300;max-width:28rem">A selection of projects that represent my skills and creative thinking. Each one taught me something new.</p>
+    </div>
+    <div class="grid-3 reveal">
+      <!-- Card 1 -->
+      <div class="project-card" style="border-top:2px solid #96003c">
+        <div style="padding:1.75rem">
+          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:1.25rem">
+            <span class="font-display" style="font-size:2.5rem;font-weight:700;color:#96003c;opacity:.12;line-height:1;user-select:none">01</span>
+            <span class="font-mono clip-chip" style="font-size:.6rem;letter-spacing:.2em;color:#e8849a;border:1px solid rgba(150,0,60,.35);padding:.3rem .75rem">Full Stack</span>
+          </div>
+          <h3 class="font-display" style="font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:.25rem">DevConnect</h3>
+          <p class="font-mono" style="font-size:.65rem;color:var(--ash);letter-spacing:.15em;margin-bottom:1rem">Social Platform for Devs</p>
+          <p style="font-size:.8rem;color:var(--ash);line-height:1.65;font-weight:300;margin-bottom:1.25rem">A full-featured social platform where developers can share projects, follow each other, and collaborate. Includes real-time notifications and a feed algorithm.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem">
+            <span class="font-mono" style="font-size:.6rem;letter-spacing:.1em;color:var(--ash);border:1px solid rgba(42,26,40,.8);padding:.25rem .625rem;clip-path:polygon(3px 0%,100% 0%,calc(100% - 3px) 100%,0% 100%)">React</span>
+            <span class="font-mono" style="font-size:.6rem;letter-spacing:.1em;color:var(--ash);border:1px solid rgba(42,26,40,.8);padding:.25rem .625rem;clip-path:polygon(3px 0%,100% 0%,calc(100% - 3px) 100%,0% 100%)">Node.js</span>
+            <span class="font-mono" style="font-size:.6rem;letter-spacing:.1em;color:var(--ash);border:1px solid rgba(42,26,40,.8);padding:.25rem .625rem;clip-path:polygon(3px 0%,100% 0%,calc(100% - 3px) 100%,0% 100%)">MongoDB</span>
+            <span class="font-mono" style="font-size:.6rem;letter-spacing:.1em;color:var(--ash);border:1px solid rgba(42,26,40,.8);padding:.25rem .625rem;clip-path:polygon(3px 0%,100% 0%,calc(100% - 3px) 100%,0% 100%)">Socket.io</span>
+          </div>
+          <div style="display:flex;gap:.75rem;padding-top:1rem;border-top:1px solid rgba(42,26,40,.6)">
+            <a href="#" class="font-mono" style="font-size:.7rem;color:var(--ash);text-decoration:none;display:flex;align-items:center;gap:.375rem;transition:color .25s" onmouseover="this.style.color='var(--blush)'" onmouseout="this.style.color='var(--ash)'">GitHub ↗</a>
+            <span style="color:rgba(42,26,40,.8)">·</span>
+            <a href="#" class="font-mono" style="font-size:.7rem;color:var(--ash);text-decoration:none;display:flex;align-items:center;gap:.375rem;transition:color .25s" onmouseover="this.style.color='var(--blush)'" onmouseout="this.style.color='var(--ash)'">Live Demo ↗</a>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="project-card" style="border-top:2px solid #7a0030">
+        <div style="padding:1.75rem">
+          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:1.25rem">
+            <span class="font-display" style="font-size:2.5rem;font-weight:700;color:#7a0030;opacity:.12;line-height:1;user-select:none">02</span>
+            <span class="font-mono clip-chip" style="font-size:.6rem;letter-spacing:.2em;color:#e8849a;border:1px solid rgba(122,0,48,.35);padding:.3rem .75rem">Frontend</span>
+          </div>
+          <h3 class="font-display" style="font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:.25rem">AlgoViz</h3>
+          <p class="font-mono" style="font-size:.65rem;color:var(--ash);letter-spacing:.15em;margin-bottom:1rem">Algorithm Visualizer</p>
+          <p style="font-size:.8rem;color:var(--ash);line-height:1.65;font-weight:300;margin-bottom:1.25rem">Interactive visualizations for 20+ sorting and graph algorithms. Watch Dijkstra, BFS, DFS come alive with step-by-step animations and speed controls.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem">
+            <span class="font-mono" style="font-size:.6rem;letter-spacing:.1em;color:var(--ash);border:1px solid rgba(42,26,40,.8);padding:.25rem .625rem;clip-path:polygon(3px 0%,100% 0%,calc(100% - 3px) 100%,0% 100%)">React</span>
+            <span class="font-mono" style="font-size:.6rem;letter-spacing:.1em;color:var(--ash);border:1px solid rgba(42,26,40,.8);padding:.25rem .625rem;clip-path:polygon(3px 0%,100% 0%,calc(100% - 3px) 100%,0% 100%)">JavaScript</span>
+            <span class="font-mono" style="font-size:.6rem;letter-spacing:.1em;color:var(--ash);border:1px solid rgba(42,26,40,.8);padding:.25rem .625rem;clip-path:polygon(3px 0%,100% 0%,calc(100% - 3px) 100%,0% 100%)">Framer Motion</span>
+          </div>
+          <div style="display:flex;gap:.75rem;padding-top:1rem;border-top:1px solid rgba(42,26,40,.6)">
+            <a href="#" class="font-mono" style="font-size:.7rem;color:var(--ash);text-decoration:none;transition:color .25s" onmouseover="this.style.color='var(--blush)'" onmouseout="this.style.color='var(--ash)'">GitHub ↗</a>
+            <span style="color:rgba(42,26,40,.8)">·</span>
+            <a href="#" class="font-mono" style="font-size:.7rem;color:var(--ash);text-decoration:none;transition:color .25s" onmouseover="this.style.color='var(--blush)'" onmouseout="this.style.color='var(--ash)'">Live Demo ↗</a>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="project-card" style="border-top:2px solid #5c0020">
+        <div style="padding:1.75rem">
+          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:1.25rem">
+            <span class="font-display" style="font-size:2.5rem;font-weight:700;color:#5c0020;opacity:.12;line-height:1;user-select:none">03</span>
+            <span class="font-mono clip-chip" style="font-size:.6rem;letter-spacing:.2em;color:#e8849a;border:1px solid rgba(92,0,32,.35);padding:.3rem .75rem">UI/UX</span>
+          </div>
+          <h3 class="font-display" style="font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:.25rem">TaskForge</h3>
+          <p class="font-mono" style="font-size:.65rem;color:var(--ash);letter-spacing:.15em;margin-bottom:1rem">Minimal Project Manager</p>
+          <p style="font-size:.8rem;color:var(--ash);line-height:1.65;font-weight:300;margin-bottom:1.25rem">A beautifully minimal Kanban-style project manager with drag-and-drop, deadlines, labels, and team collaboration. Built with a focus on clean UX.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem">
+            <span class="font-mono" style="font-size:.6rem;letter-spacing:.1em;color:var(--ash);border:1px solid rgba(42,26,40,.8);padding:.25rem .625rem;clip-path:polygon(3px 0%,100% 0%,calc(100% - 3px) 100%,0% 100%)">React</span>
+            <span class="font-mono" style="font-size:.6rem;letter-spacing:.1em;color:var(--ash);border:1px solid rgba(42,26,40,.8);padding:.25rem .625rem;clip-path:polygon(3px 0%,100% 0%,calc(100% - 3px) 100%,0% 100%)">Zustand</span>
+            <span class="font-mono" style="font-size:.6rem;letter-spacing:.1em;color:var(--ash);border:1px solid rgba(42,26,40,.8);padding:.25rem .625rem;clip-path:polygon(3px 0%,100% 0%,calc(100% - 3px) 100%,0% 100%)">Tailwind</span>
+            <span class="font-mono" style="font-size:.6rem;letter-spacing:.1em;color:var(--ash);border:1px solid rgba(42,26,40,.8);padding:.25rem .625rem;clip-path:polygon(3px 0%,100% 0%,calc(100% - 3px) 100%,0% 100%)">Vite</span>
+          </div>
+          <div style="display:flex;gap:.75rem;padding-top:1rem;border-top:1px solid rgba(42,26,40,.6)">
+            <a href="#" class="font-mono" style="font-size:.7rem;color:var(--ash);text-decoration:none;transition:color .25s" onmouseover="this.style.color='var(--blush)'" onmouseout="this.style.color='var(--ash)'">GitHub ↗</a>
+            <span style="color:rgba(42,26,40,.8)">·</span>
+            <a href="#" class="font-mono" style="font-size:.7rem;color:var(--ash);text-decoration:none;transition:color .25s" onmouseover="this.style.color='var(--blush)'" onmouseout="this.style.color='var(--ash)'">Live Demo ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:3rem;text-align:center" class="reveal">
+      <a href="https://github.com/chiragverma" class="font-mono" style="font-size:.7rem;letter-spacing:.2em;color:var(--ash);text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:color .3s" onmouseover="this.style.color='var(--blush)'" onmouseout="this.style.color='var(--ash)'">More on GitHub <span style="height:1px;width:1.5rem;background:currentColor;transition:width .4s"></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="divider"></div>
+  <div class="max-w">
+    <div style="margin-bottom:4rem" class="reveal">
+      <p class="font-mono" style="font-size:.65rem;letter-spacing:.3em;color:#d94f6a;margin-bottom:.75rem">04. CONTACT</p>
+      <h2 class="font-display section-title" style="font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--text)">Let's Talk</h2>
+      <p style="margin-top:1.25rem;color:var(--ash);font-size:.9rem;font-weight:300;max-width:28rem">Open to internships, collaborations, and interesting conversations. Drop me a message — I respond within 24h.</p>
+    </div>
+    <div class="grid-2">
+      <!-- Socials -->
+      <div class="reveal">
+        <p class="font-mono" style="font-size:.65rem;letter-spacing:.25em;color:var(--ash);margin-bottom:1.75rem;text-transform:uppercase">Find Me At</p>
+        <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:3rem">
+          <a href="mailto:chiragverma@email.com" class="social-link" style="border-radius:2px">
+            <svg width="18" height="18" fill="none" stroke="var(--ash)" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+            <div>
+              <div class="font-mono" style="font-size:.6rem;letter-spacing:.2em;color:var(--ash);margin-bottom:.2rem">EMAIL</div>
+              <div class="font-mono" style="font-size:.8rem;color:var(--blush)">chiragverma344@email.com</div>
+            </div>
+            <svg style="margin-left:auto;color:rgba(150,0,60,.4)" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </a>
+          <a href="https://github.com/chiragverma" target="_blank" rel="noopener" class="social-link" style="border-radius:2px">
+            <svg width="18" height="18" fill="var(--ash)" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            <div>
+              <div class="font-mono" style="font-size:.6rem;letter-spacing:.2em;color:var(--ash);margin-bottom:.2rem">GITHUB</div>
+              <div class="font-mono" style="font-size:.8rem;color:var(--blush)">github.com/chiragverma</div>
+            </div>
+            <svg style="margin-left:auto;color:rgba(150,0,60,.4)" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </a>
+          <a href="https://linkedin.com/in/chiragverma" target="_blank" rel="noopener" class="social-link" style="border-radius:2px">
+            <svg width="18" height="18" fill="var(--ash)" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            <div>
+              <div class="font-mono" style="font-size:.6rem;letter-spacing:.2em;color:var(--ash);margin-bottom:.2rem">LINKEDIN</div>
+              <div class="font-mono" style="font-size:.8rem;color:var(--blush)">linkedin.com/in/chiragverma</div>
+            </div>
+            <svg style="margin-left:auto;color:rgba(150,0,60,.4)" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </a>
+        </div>
+        <div style="display:inline-flex;align-items:center;gap:.625rem;border:1px solid rgba(150,0,60,.3);padding:.625rem 1rem">
+          <span style="width:.375rem;height:.375rem;border-radius:50%;background:#d94f6a;animation:blink 1s infinite"></span>
+          <span class="font-mono" style="font-size:.65rem;letter-spacing:.15em;color:var(--ash)">Available for internship · Summer 2025</span>
+        </div>
+      </div>
+      <!-- Form -->
+      <div class="reveal" id="contactFormWrap">
+        <p class="font-mono" style="font-size:.65rem;letter-spacing:.25em;color:var(--ash);margin-bottom:1.75rem;text-transform:uppercase">Send a Message</p>
+        <form id="contactForm" style="display:flex;flex-direction:column;gap:1rem">
+          <div>
+            <label class="font-mono" style="font-size:.6rem;letter-spacing:.2em;color:var(--ash);display:block;margin-bottom:.5rem;text-transform:uppercase">Your Name</label>
+            <input class="form-input" type="text" placeholder="Chirag Verma" required/>
+          </div>
+          <div>
+            <label class="font-mono" style="font-size:.6rem;letter-spacing:.2em;color:var(--ash);display:block;margin-bottom:.5rem;text-transform:uppercase">Email Address</label>
+            <input class="form-input" type="email" placeholder="you@email.com" required/>
+          </div>
+          <div>
+            <label class="font-mono" style="font-size:.6rem;letter-spacing:.2em;color:var(--ash);display:block;margin-bottom:.5rem;text-transform:uppercase">Message</label>
+            <textarea class="form-input" rows="5" placeholder="Hi Chirag, I'd love to..." required></textarea>
+          </div>
+          <button type="submit" class="clip-btn" style="padding:.875rem;background:linear-gradient(135deg,#7a0030,#96003c);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.2em;border:none;cursor:none;transition:all .3s;width:100%" onmouseover="this.style.boxShadow='0 0 28px rgba(150,0,60,.4)';this.style.background='linear-gradient(135deg,#96003c,#b30047)'" onmouseout="this.style.boxShadow='none';this.style.background='linear-gradient(135deg,#7a0030,#96003c)'" id="submitBtn">Send Message →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <p class="font-mono" style="font-size:.7rem;letter-spacing:.15em;color:var(--ash)"><span style="color:#d94f6a">©</span> 2025 Chirag Verma</p>
+    <p class="font-mono" style="font-size:.7rem;letter-spacing:.15em;color:rgba(154,143,160,.4)">Designed & Built with <span id="heart" style="color:#96003c">♥</span> by Chirag</p>
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="font-mono" style="font-size:.65rem;letter-spacing:.2em;color:var(--ash);background:none;border:none;cursor:none;transition:color .3s;display:flex;align-items:center;gap:.5rem" onmouseover="this.style.color='var(--blush)'" onmouseout="this.style.color='var(--ash)'">Back to Top ↑</button>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const dot=document.getElementById('cursorDot'),ring=document.getElementById('cursorRing');
+document.addEventListener('mousemove',e=>{
+  dot.style.left=e.clientX+'px';dot.style.top=e.clientY+'px';
+  setTimeout(()=>{ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px'},60);
+});
+document.querySelectorAll('a,button,input,textarea').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.transform='translate(-50%,-50%) scale(1.8)';ring.style.borderColor='rgba(150,0,60,.9)';ring.style.background='rgba(150,0,60,.08)'});
+  el.addEventListener('mouseleave',()=>{ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.borderColor='rgba(150,0,60,.7)';ring.style.background='transparent'});
+});
+
+// Navbar scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40);
+});
+
+// Smooth scroll
+function scrollTo(id){document.querySelector(id)?.scrollIntoView({behavior:'smooth'})}
+function scrollTop(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'})}
+
+// Typing effect
+const strings=['I build things for the web.','I craft clean, elegant code.','I turn ideas into reality.','I love algorithms & logic.'];
+let si=0,ci=0,del=false;
+const typedEl=document.getElementById('typed');
+function type(){
+  const cur=strings[si];
+  if(!del&&ci<=cur.length){typedEl.textContent=cur.slice(0,ci);ci++;setTimeout(type,ci===cur.length?1800:65);}
+  else if(del&&ci>=0){typedEl.textContent=cur.slice(0,ci);ci--;setTimeout(type,30);}
+  if(!del&&ci>cur.length){del=true;setTimeout(type,1800);}
+  if(del&&ci<0){del=false;si=(si+1)%strings.length;ci=0;setTimeout(type,200);}
+}
+type();
+
+// Scroll reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.opacity='1';e.target.style.transform='translateY(0)';
+      // Trigger skill bars inside this element
+      e.target.querySelectorAll('.skill-fill[data-w]').forEach(b=>{setTimeout(()=>{b.style.width=b.dataset.w},200);});
+    }
+  });
+},{threshold:.12,rootMargin:'-60px'});
+document.querySelectorAll('.reveal').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(28px)';el.style.transition='opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)';
+  obs.observe(el);
+});
+
+// Interest card hover underline
+document.querySelectorAll('.interest-card').forEach(c=>{
+  const line=document.createElement('div');
+  line.style.cssText='margin-top:.75rem;height:1px;width:0;background:linear-gradient(90deg,#96003c,#d94f6a);transition:width .5s ease';
+  c.appendChild(line);
+  c.addEventListener('mouseenter',()=>{c.style.borderColor='rgba(150,0,60,.65)';c.style.boxShadow='0 8px 30px rgba(150,0,60,.18)';c.style.transform='translateY(-4px)';line.style.width='100%'});
+  c.addEventListener('mouseleave',()=>{c.style.borderColor='rgba(42,26,40,.8)';c.style.boxShadow='none';c.style.transform='translateY(0)';line.style.width='0'});
+  c.style.transition='all .3s ease';
+});
+
+// Contact form
+document.getElementById('contactForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const btn=document.getElementById('submitBtn');
+  btn.textContent='Sending...';btn.disabled=true;
+  setTimeout(()=>{
+    document.getElementById('contactFormWrap').innerHTML=`
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:320px;text-align:center;background:rgba(17,14,24,.7);border:1px solid rgba(42,26,40,.8);padding:3rem">
+        <div style="width:56px;height:56px;border:1px solid rgba(150,0,60,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
+          <svg width="24" height="24" fill="none" stroke="#d94f6a" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+        </div>
+        <p class="font-display" style="font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:.5rem">Message Sent</p>
+        <p class="font-mono" style="font-size:.7rem;letter-spacing:.15em;color:var(--ash)">I'll get back to you soon.</p>
+      </div>`;
+  },1800);
+});
+
+// Heart pulse
+setInterval(()=>{
+  const h=document.getElementById('heart');
+  if(h){h.style.color=h.style.color==='#d94f6a'?'#96003c':'#d94f6a';}
+},1200);
+</script>
+</body>
+</html>

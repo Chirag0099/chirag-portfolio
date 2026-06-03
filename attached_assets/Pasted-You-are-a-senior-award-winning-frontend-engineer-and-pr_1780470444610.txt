@@ -1,0 +1,190 @@
+You are a senior award-winning frontend engineer and product designer.
+
+I want you to completely redesign and rebuild my personal developer portfolio from scratch.
+
+DO NOT create a basic portfolio.
+
+The result should feel like a portfolio from a top-tier software engineer working at a modern startup.
+
+My name is: Chirag Verma
+
+Profile:
+- B.Tech Computer Science Student
+- Full Stack Developer
+- Strong in C++, DSA, JavaScript, TypeScript
+- Learning MERN Stack
+- Interested in AI-powered products
+- Loves building real-world products
+
+GOAL:
+When a recruiter opens the website, the first reaction should be:
+
+"Wow, this is different."
+
+Design Principles:
+- Dark premium theme
+- Modern and futuristic
+- Elegant and minimal
+- No generic portfolio template
+- Extremely smooth animations
+- Professional over flashy
+- Clean typography
+- Responsive on all devices
+- Fast loading
+- Accessibility friendly
+
+VISUAL STYLE:
+Take inspiration from:
+- Linear
+- Vercel
+- Stripe
+- Framer
+- Apple
+- Raycast
+
+Color Palette:
+Primary:
+#FF005C
+#FF3D81
+
+Background:
+#050510
+#090915
+
+Text:
+#FFFFFF
+#B8B8C5
+
+HERO SECTION:
+Create a stunning hero section.
+
+Layout:
+- Content on left
+- My photo on right
+- Balanced spacing
+
+IMPORTANT PHOTO REQUIREMENT:
+I will provide my image.
+
+Use the image professionally.
+
+DO NOT:
+- Put it inside a square card
+- Put it inside a circle
+- Add ugly borders
+- Add visible frames
+
+Instead:
+- Remove background from image
+- Use transparent cutout
+- Blend it naturally into the design
+- Add soft ambient glow behind the subject
+- Add subtle floating animation
+- Add subtle mouse-reactive lighting
+- Keep my face untouched
+
+Hero Content:
+
+Name:
+Chirag Verma
+
+Animated headline rotation:
+- Full Stack Developer
+- C++ & DSA Enthusiast
+- Building AI-Powered Products
+- Problem Solver
+
+Short description:
+Focus on impact and product building.
+
+CTA Buttons:
+- View Projects
+- Download Resume
+- Contact Me
+
+Buttons must have premium hover animations.
+
+INTERACTIVE FEATURES:
+Add at least 3 memorable interactions:
+
+1. Mouse-follow glow effect
+2. Interactive project cards
+3. Animated skills visualization
+
+OPTIONAL:
+A mini DSA visualizer section
+
+PROJECT SECTION:
+Create modern project cards.
+
+Each card should have:
+- Image
+- Tech stack
+- Live demo
+- GitHub link
+- Hover animation
+- Subtle 3D depth
+
+SKILLS SECTION:
+Do NOT use boring progress bars.
+
+Create:
+- Interactive skill categories
+- Animated technology chips
+- Dynamic hover states
+
+ABOUT SECTION:
+Timeline style.
+
+Show:
+- Learning journey
+- Education
+- Experience
+- Achievements
+
+EXPERIENCE SECTION:
+Create premium timeline cards.
+
+CONTACT SECTION:
+Beautiful contact experience.
+
+Include:
+- Email
+- LinkedIn
+- GitHub
+- Resume
+
+FOOTER:
+Modern minimal footer.
+
+ANIMATIONS:
+Use:
+- Framer Motion style animations
+- Smooth page transitions
+- Scroll reveal animations
+- Parallax effects
+- Floating ambient elements
+
+TECHNICAL REQUIREMENTS:
+- HTML
+- CSS
+- JavaScript
+
+OR
+
+- React + Vite
+
+Code must be production-quality.
+
+IMPORTANT:
+Do not explain your decisions.
+
+Generate the complete project.
+
+Return:
+1. Folder structure
+2. Complete code
+3. Assets required
+4. Deployment instructions
+
+The portfolio should look like something that could win a frontend showcase competition.
