@@ -149,6 +149,22 @@
   animation-delay: 4s;
 }
 
+/* Marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  animation: marquee 30s linear infinite;
+  width: max-content;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
 /* Noise overlay */
 .noise-overlay {
   position: fixed;

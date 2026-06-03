@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { motion, useScroll, useTransform, useInView, useSpring } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,15 +7,132 @@ import { useToast } from "@/hooks/use-toast";
 import { 
   Terminal, Code2, Cpu, ExternalLink,
   Linkedin, Mail, ArrowRight, Download, Menu, X,
-  Briefcase, GraduationCap, MapPin, Phone
+  Briefcase, GraduationCap, MapPin, Phone,
+  ChevronUp, Copy, Check, Zap, Award
 } from "lucide-react";
 import { 
   SiReact, SiNodedotjs, SiGithub, SiLinkedin, 
   SiCplusplus, SiPython, SiJavascript, SiHtml5
 } from "react-icons/si";
 
-// You would typically import the photo here
 import chiragPhoto from "@assets/chirag_nobg.png";
+
+// --- Utility Components ---
+
+const ScrollProgressBar = () => {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  return (
+    <motion.div
+      style={{ scaleX }}
+      className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary via-pink-400 to-primary z-[100] origin-left"
+    />
+  );
+};
+
+const BackToTop = () => {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 500);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return (
+    <motion.button
+      animate={{ opacity: visible ? 1 : 0, scale: visible ? 1 : 0.8, pointerEvents: visible ? 'auto' : 'none' }}
+      transition={{ duration: 0.2 }}
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-[0_0_25px_rgba(255,0,92,0.4)] hover:shadow-[0_0_35px_rgba(255,0,92,0.6)] hover:scale-110 transition-all"
+      data-testid="button-back-to-top"
+    >
+      <ChevronUp className="w-5 h-5" />
+    </motion.button>
+  );
+};
+
+const MouseGlow = () => {
+  const [pos, setPos] = useState({ x: -400, y: -400 });
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => setPos({ x: e.clientX, y: e.clientY });
+    window.addEventListener('mousemove', onMove, { passive: true });
+    return () => window.removeEventListener('mousemove', onMove);
+  }, []);
+  return (
+    <div
+      className="fixed inset-0 z-0 pointer-events-none"
+      style={{ background: `radial-gradient(circle 380px at ${pos.x}px ${pos.y}px, rgba(255,0,92,0.055), transparent 70%)` }}
+    />
+  );
+};
+
+const CustomCursor = () => {
+  const [pos, setPos] = useState({ x: -100, y: -100 });
+  const [ring, setRing] = useState({ x: -100, y: -100 });
+  const [clicking, setClicking] = useState(false);
+  const [hovering, setHovering] = useState(false);
+  const ringRef = useRef({ x: -100, y: -100 });
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      setPos({ x: e.clientX, y: e.clientY });
+      const t = e.target as HTMLElement;
+      setHovering(!!t.closest('a,button,[role="button"],input,textarea,select'));
+    };
+    const onDown = () => setClicking(true);
+    const onUp = () => setClicking(false);
+    window.addEventListener('mousemove', onMove, { passive: true });
+    window.addEventListener('mousedown', onDown);
+    window.addEventListener('mouseup', onUp);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mousedown', onDown);
+      window.removeEventListener('mouseup', onUp);
+    };
+  }, []);
+
+  useEffect(() => {
+    let raf: number;
+    const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
+    const animate = () => {
+      ringRef.current = { x: lerp(ringRef.current.x, pos.x, 0.1), y: lerp(ringRef.current.y, pos.y, 0.1) };
+      setRing({ ...ringRef.current });
+      raf = requestAnimationFrame(animate);
+    };
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
+  }, [pos]);
+
+  return (
+    <>
+      <div className="fixed pointer-events-none z-[9999] rounded-full bg-primary" style={{ width: clicking ? 4 : 6, height: clicking ? 4 : 6, transform: `translate(${pos.x - 3}px, ${pos.y - 3}px)`, transition: 'width 0.1s, height 0.1s' }} />
+      <div className="fixed pointer-events-none z-[9998] rounded-full border border-primary/60" style={{ width: hovering ? 44 : 28, height: hovering ? 44 : 28, transform: `translate(${ring.x - (hovering ? 22 : 14)}px, ${ring.y - (hovering ? 22 : 14)}px)`, opacity: hovering ? 0.9 : 0.45, transition: 'width 0.15s, height 0.15s, opacity 0.15s' }} />
+    </>
+  );
+};
+
+const AnimatedCounter = ({ value, suffix = '' }: { value: string; suffix?: string }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  const [count, setCount] = useState(0);
+  const numeric = parseInt(value.replace(/\D/g, ''));
+  const isNumeric = !isNaN(numeric) && numeric > 0;
+
+  useEffect(() => {
+    if (!isInView || !isNumeric) return;
+    let start = 0;
+    const duration = 1200;
+    const steps = 40;
+    const increment = numeric / steps;
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= numeric) { setCount(numeric); clearInterval(timer); }
+      else setCount(Math.floor(start));
+    }, duration / steps);
+    return () => clearInterval(timer);
+  }, [isInView, numeric, isNumeric]);
+
+  return <span ref={ref}>{isNumeric ? count : value}{suffix}</span>;
+};
 
 // --- Components ---
 
@@ -279,19 +396,27 @@ const SectionHeading = ({ children, align = "left" }: { children: React.ReactNod
 
 export default function Home() {
   const { toast } = useToast();
-  
-  // Handlers
+  const [copiedEmail, setCopiedEmail] = useState(false);
+
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message sent!",
-      description: "Thanks for reaching out. I'll get back to you soon.",
-    });
+    toast({ title: "Message sent!", description: "Thanks for reaching out. I'll get back to you soon." });
     (e.target as HTMLFormElement).reset();
   };
 
+  const copyEmail = useCallback(() => {
+    navigator.clipboard.writeText('chiragverma344@gmail.com');
+    setCopiedEmail(true);
+    toast({ title: "Copied!", description: "Email address copied to clipboard." });
+    setTimeout(() => setCopiedEmail(false), 2500);
+  }, [toast]);
+
   return (
     <div className="relative min-h-screen">
+      <ScrollProgressBar />
+      <BackToTop />
+      <MouseGlow />
+      <CustomCursor />
       <Navbar />
 
       {/* Background elements */}
@@ -309,9 +434,15 @@ export default function Home() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex-1 flex flex-col gap-6"
           >
-            <div className="inline-flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full w-fit">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="font-mono text-xs md:text-sm text-gray-300">CSE Student · Full Stack Developer</span>
+            <div className="flex flex-wrap gap-3">
+              <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <span className="font-mono text-xs text-gray-300">CSE Student · Full Stack Developer</span>
+              </div>
+              <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 px-4 py-2 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                <span className="font-mono text-xs text-green-400">Open to Work</span>
+              </div>
             </div>
             
             <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-bold leading-[1.1] tracking-tight">
@@ -378,18 +509,46 @@ export default function Home() {
         <section className="py-12 border-y border-white/5 my-20">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 divide-x-0 md:divide-x divide-white/5">
             {[
-              { num: "2+", label: "Years Coding" },
-              { num: "Top 3", label: "Hackathon Winner" },
-              { num: "10+", label: "Projects Built" },
-              { num: "100%", label: "Always Learning" }
+              { num: "2", suffix: "+", label: "Years Coding" },
+              { num: "Top 3", suffix: "", label: "Hackathon Finish" },
+              { num: "3", suffix: "+", label: "Projects Built" },
+              { num: "6", suffix: "+", label: "Certifications" },
             ].map((stat, i) => (
-              <div key={i} className="flex flex-col items-center justify-center text-center">
-                <span className="text-3xl md:text-5xl font-display font-bold text-gradient mb-2">{stat.num}</span>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="flex flex-col items-center justify-center text-center"
+              >
+                <span className="text-3xl md:text-5xl font-display font-bold text-gradient mb-2">
+                  <AnimatedCounter value={stat.num} suffix={stat.suffix} />
+                </span>
                 <span className="text-sm font-mono text-gray-400 uppercase tracking-wider">{stat.label}</span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>
+
+        {/* CURRENTLY LEARNING MARQUEE */}
+        <div className="overflow-hidden py-6 mb-8 relative">
+          <div className="flex gap-10 animate-marquee whitespace-nowrap">
+            {[
+              "C/C++", "Python", "JavaScript", "React", "Node.js",
+              "WebSockets", "Data Structures", "Algorithms", "OOP",
+              "System Design", "HTML & CSS", "Git", "MERN Stack", "AI/ML Basics",
+              "C/C++", "Python", "JavaScript", "React", "Node.js",
+              "WebSockets", "Data Structures", "Algorithms", "OOP",
+              "System Design", "HTML & CSS", "Git", "MERN Stack", "AI/ML Basics",
+            ].map((item, i) => (
+              <span key={i} className="inline-flex items-center gap-2 text-sm font-mono text-gray-600 hover:text-primary transition-colors">
+                <Zap className="w-3 h-3 text-primary/50" />
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
 
         {/* ABOUT SECTION */}
         <section id="about" className="py-24 scroll-mt-20">
@@ -657,15 +816,26 @@ export default function Home() {
                 </p>
                 
                 <div className="space-y-6">
-                  <a href="mailto:chiragverma344@gmail.com" className="flex items-center gap-4 text-gray-300 hover:text-white group transition-colors w-fit">
-                    <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center border border-white/10 group-hover:border-primary/50 group-hover:bg-primary/10 transition-all">
+                  <div className="flex items-center gap-4 text-gray-300 group w-fit">
+                    <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center border border-white/10 group-hover:border-primary/50 group-hover:bg-primary/10 transition-all shrink-0">
                       <Mail className="w-5 h-5 group-hover:text-primary transition-colors" />
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <p className="text-sm text-gray-500 mb-1">Email</p>
-                      <p className="font-medium group-hover:underline decoration-primary underline-offset-4">chiragverma344@gmail.com</p>
+                      <div className="flex items-center gap-3">
+                        <a href="mailto:chiragverma344@gmail.com" className="font-medium hover:underline decoration-primary underline-offset-4 hover:text-white transition-colors">
+                          chiragverma344@gmail.com
+                        </a>
+                        <button
+                          onClick={copyEmail}
+                          className="text-gray-600 hover:text-primary transition-colors"
+                          title="Copy email"
+                        >
+                          {copiedEmail ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                        </button>
+                      </div>
                     </div>
-                  </a>
+                  </div>
                   
                   <a href="tel:+919039096970" className="flex items-center gap-4 text-gray-300 hover:text-white group transition-colors w-fit">
                     <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center border border-white/10 group-hover:border-primary/50 group-hover:bg-primary/10 transition-all">
@@ -712,13 +882,28 @@ export default function Home() {
       </main>
 
       {/* FOOTER */}
-      <footer className="border-t border-white/5 py-8 mt-10">
-        <div className="container mx-auto px-6 text-center md:flex justify-between items-center">
-          <p className="text-gray-500 font-mono text-sm mb-4 md:mb-0">
-            Designed & Built by <span className="text-white">Chirag Verma</span> · 2025
-          </p>
-          <div className="text-sm text-gray-500 font-mono flex items-center justify-center gap-2">
-            Made with <SiReact className="text-cyan-400" /> + React
+      <footer className="border-t border-white/5 py-10 mt-10">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+              <p className="font-display font-bold text-white text-lg mb-1">Chirag Verma</p>
+              <p className="text-gray-500 text-sm font-mono">B.Tech CSE · PIEMR Indore · 3rd Year</p>
+            </div>
+            <div className="flex items-center gap-6">
+              <a href="https://www.linkedin.com/in/chirag-verma-cse" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-primary transition-colors text-sm font-mono">LinkedIn</a>
+              <a href="mailto:chiragverma344@gmail.com" className="text-gray-500 hover:text-primary transition-colors text-sm font-mono">Email</a>
+              <a href="/resume.pdf" download="Chirag_Verma_Resume.pdf" className="text-gray-500 hover:text-primary transition-colors text-sm font-mono">Resume</a>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-gray-600 font-mono">
+              <span>Made with</span>
+              <SiReact className="text-cyan-400 w-4 h-4" />
+              <span>React · © 2025</span>
+            </div>
+          </div>
+          <div className="mt-6 pt-6 border-t border-white/5 text-center">
+            <p className="text-xs text-gray-700 font-mono">
+              <span className="text-primary/50">&gt;</span> Always building, always learning — <span className="text-primary/70">open to opportunities</span>
+            </p>
           </div>
         </div>
       </footer>
