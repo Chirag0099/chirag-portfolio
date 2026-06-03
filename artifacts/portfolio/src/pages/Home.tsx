@@ -10,9 +10,8 @@ import {
   Briefcase, GraduationCap, MapPin, Phone
 } from "lucide-react";
 import { 
-  SiReact, SiNodedotjs, SiMongodb, SiExpress, 
-  SiGithub, SiLinkedin, SiCplusplus, SiTypescript, 
-  SiJavascript, SiVite, SiTailwindcss, SiVercel
+  SiReact, SiNodedotjs, SiGithub, SiLinkedin, 
+  SiCplusplus, SiPython, SiJavascript, SiHtml5
 } from "react-icons/si";
 
 // You would typically import the photo here
@@ -353,28 +352,28 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { title: "Languages", items: [
-                { name: "C++", icon: SiCplusplus, color: "text-blue-500" },
-                { name: "TypeScript", icon: SiTypescript, color: "text-blue-400" },
-                { name: "JavaScript", icon: SiJavascript, color: "text-yellow-400" },
-                { name: "C#", icon: Code2, color: "text-purple-500" },
+                { name: "C/C++", icon: SiCplusplus, color: "text-blue-500" },
+                { name: "Python", icon: SiPython, color: "text-yellow-400" },
+                { name: "JavaScript", icon: SiJavascript, color: "text-yellow-300" },
+                { name: "HTML", icon: SiHtml5, color: "text-orange-500" },
               ]},
-              { title: "Frameworks", items: [
+              { title: "Web & Frameworks", items: [
+                { name: "CSS", icon: Code2, color: "text-blue-400" },
                 { name: "React", icon: SiReact, color: "text-cyan-400" },
                 { name: "Node.js", icon: SiNodedotjs, color: "text-green-500" },
-                { name: "Express", icon: SiExpress, color: "text-gray-300" },
-                { name: "Tailwind", icon: SiTailwindcss, color: "text-cyan-300" },
+                { name: "WebSockets", icon: Code2, color: "text-purple-400" },
               ]},
-              { title: "Tools & DB", items: [
-                { name: "MongoDB", icon: SiMongodb, color: "text-green-400" },
+              { title: "Tools", items: [
                 { name: "Git", icon: SiGithub, color: "text-orange-500" },
-                { name: "Vite", icon: SiVite, color: "text-purple-400" },
-                { name: "Vercel", icon: SiVercel, color: "text-white" },
+                { name: "VS Code", icon: Code2, color: "text-blue-500" },
+                { name: "Geolocation API", icon: MapPin, color: "text-green-400" },
+                { name: "Windows", icon: Terminal, color: "text-gray-300" },
               ]},
               { title: "Focus Areas", items: [
                 { name: "Data Structures", icon: Code2, color: "text-primary" },
                 { name: "Algorithms", icon: Cpu, color: "text-primary" },
-                { name: "Full Stack", icon: Terminal, color: "text-primary" },
-                { name: "AI Integration", icon: Briefcase, color: "text-primary" },
+                { name: "OOP", icon: Briefcase, color: "text-primary" },
+                { name: "System Design", icon: Terminal, color: "text-primary" },
               ]},
             ].map((category, i) => (
               <motion.div 
@@ -407,21 +406,21 @@ export default function Home() {
             {[
               {
                 title: "College Management System",
-                desc: "A dynamic full-stack platform built with a team to manage academic and administrative tasks. Features student & teacher login/signup, marks display, feedback section, and informational pages — About College, Placements, and Contact Us.",
-                tech: ["MongoDB", "Express.js", "React", "Node.js"],
+                desc: "A responsive platform built with a team to manage academic & administrative tasks. Features student/teacher login, signup, marks display, feedback section, and advanced search. Improved UX engagement by 30%.",
+                tech: ["HTML", "CSS", "JavaScript"],
                 featured: true,
                 demo: "#",
                 color: "from-emerald-500/20 to-teal-900/20",
-                highlights: ["Student & Teacher Portals", "Marks Display", "Feedback System", "Responsive Design"]
+                highlights: ["Student & Teacher Portals", "Marks Display", "Feedback System", "+30% UX Engagement"]
               },
               {
                 title: "Proximity Chat App",
-                desc: "A real-time chat application where users can connect and communicate with others nearby based on their location. Enables spontaneous local conversations with live messaging and proximity-based discovery.",
-                tech: ["JavaScript", "Node.js", "WebSockets", "Geolocation API"],
+                desc: "A real-time location-based chat app enabling nearby user interactions. Tracks users via Geolocation API within a specified range and uses WebSockets for instant messaging between nearby users.",
+                tech: ["HTML", "CSS", "JavaScript", "React", "WebSockets", "Geolocation API"],
                 featured: true,
                 demo: "#",
                 color: "from-violet-500/20 to-indigo-900/20",
-                highlights: ["Real-time Messaging", "Location-based", "Nearby Discovery", "Live Updates"]
+                highlights: ["Real-time Messaging", "Geolocation Tracking", "WebSocket Protocol", "System Design"]
               },
               {
                 title: "Personal Portfolio",
@@ -593,7 +592,7 @@ export default function Home() {
             Designed & Built by <span className="text-white">Chirag Verma</span> · 2025
           </p>
           <div className="text-sm text-gray-500 font-mono flex items-center justify-center gap-2">
-            Made with <SiReact className="text-cyan-400" /> + <SiVite className="text-purple-400" />
+            Made with <SiReact className="text-cyan-400" /> + React
           </div>
         </div>
       </footer>
