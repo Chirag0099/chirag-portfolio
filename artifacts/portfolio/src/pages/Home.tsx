@@ -415,10 +415,19 @@ export default function Home() {
                 highlights: ["Student & Teacher Portals", "Marks Display", "Feedback System", "Responsive Design"]
               },
               {
+                title: "Proximity Chat App",
+                desc: "A real-time chat application where users can connect and communicate with others nearby based on their location. Enables spontaneous local conversations with live messaging and proximity-based discovery.",
+                tech: ["JavaScript", "Node.js", "WebSockets", "Geolocation API"],
+                featured: true,
+                demo: "#",
+                color: "from-violet-500/20 to-indigo-900/20",
+                highlights: ["Real-time Messaging", "Location-based", "Nearby Discovery", "Live Updates"]
+              },
+              {
                 title: "Personal Portfolio",
                 desc: "This portfolio — designed and built from scratch with a premium dark theme, custom animations, background-removed photo integration, and interactive sections including skills, timeline, and contact form.",
                 tech: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
-                featured: true,
+                featured: false,
                 demo: "#",
                 color: "from-primary/20 to-purple-900/20",
                 highlights: ["Custom Cursor", "Scroll Animations", "3D Tilt Cards", "Responsive"]
