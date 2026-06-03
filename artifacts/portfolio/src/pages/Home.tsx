@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { 
-  Terminal, Code2, Cpu, ExternalLink, Github, 
+  Terminal, Code2, Cpu, ExternalLink,
   Linkedin, Mail, ArrowRight, Download, Menu, X,
   Briefcase, GraduationCap, MapPin, Phone
 } from "lucide-react";
@@ -468,8 +468,8 @@ export default function Home() {
                     </div>
                     
                     <div className="flex items-center gap-4 mt-auto pt-4 border-t border-white/5">
-                      <a href={project.github} className="text-gray-400 hover:text-white transition-colors flex items-center gap-2 text-sm font-medium">
-                        <Github className="w-4 h-4" /> Code
+                      <a href="https://linkedin.com/in/chirag-verma" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 text-sm font-medium">
+                        <Linkedin className="w-4 h-4" /> LinkedIn
                       </a>
                       <a href={project.demo} className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 text-sm font-medium ml-auto">
                         Live Demo <ExternalLink className="w-4 h-4" />
@@ -553,14 +553,8 @@ export default function Home() {
                   </a>
                   
                   <div className="flex items-center gap-4 pt-4">
-                    <a href="https://github.com/chirag-verma" target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center border border-white/10 hover:border-primary hover:text-primary transition-all hover:-translate-y-1">
-                      <Github className="w-4 h-4" />
-                    </a>
-                    <a href="#" target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center border border-white/10 hover:border-primary hover:text-primary transition-all hover:-translate-y-1">
+                    <a href="https://linkedin.com/in/chirag-verma" target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center border border-white/10 hover:border-primary hover:text-primary transition-all hover:-translate-y-1">
                       <Linkedin className="w-4 h-4" />
-                    </a>
-                    <a href="#" target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center border border-white/10 hover:border-primary hover:text-primary transition-all hover:-translate-y-1">
-                      <MapPin className="w-4 h-4" />
                     </a>
                   </div>
                 </div>
