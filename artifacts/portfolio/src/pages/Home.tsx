@@ -11,7 +11,7 @@ import {
   ChevronUp, Copy, Check, Zap, Award, Share2
 } from "lucide-react";
 import { 
-  SiReact, SiNodedotjs, SiGithub, SiLinkedin, SiInstagram,
+  SiReact, SiNodedotjs, SiGithub, SiInstagram,
   SiCplusplus, SiPython, SiJavascript, SiHtml5
 } from "react-icons/si";
 
