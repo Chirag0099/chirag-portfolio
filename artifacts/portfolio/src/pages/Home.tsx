@@ -414,11 +414,17 @@ export default function Home() {
   const { toast } = useToast();
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [formName, setFormName] = useState('');
+  const [formEmail, setFormEmail] = useState('');
+  const [formMessage, setFormMessage] = useState('');
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast({ title: "Message sent!", description: "Thanks for reaching out. I'll get back to you soon." });
-    (e.target as HTMLFormElement).reset();
+    const subject = encodeURIComponent(`Portfolio Contact from ${formName}`);
+    const body = encodeURIComponent(`Name: ${formName}\nEmail: ${formEmail}\n\nMessage:\n${formMessage}`);
+    window.open(`mailto:chiragverma344@gmail.com?subject=${subject}&body=${body}`);
+    toast({ title: "Opening email client!", description: "Your message is pre-filled — just hit send!" });
+    setFormName(''); setFormEmail(''); setFormMessage('');
   };
 
   const copyEmail = useCallback(() => {
@@ -624,43 +630,31 @@ export default function Home() {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              className="flex flex-col gap-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-primary/50 before:to-transparent"
+              className="flex flex-col gap-6 relative before:absolute before:left-5 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-primary/60 before:via-primary/20 before:to-transparent"
             >
               {[
-                { year: "2023", title: "Started Journey", desc: "Began B.Tech CSE at PIEMR, Indore. Ignited passion for programming.", icon: GraduationCap },
-                { year: "2024", title: "Hackathon Winner", desc: "Won 2nd Runner-up at Urjotsav 2024. Built a full-stack College Management System.", icon: Briefcase },
-                { year: "2025", title: "Deep Dive", desc: "Mastering TypeScript, Advanced DSA, and exploring AI-powered product development.", icon: Code2 },
-                { year: "2027", title: "Future Vision", desc: "Expected Graduation. Ready to impact the tech industry globally.", icon: Cpu },
+                { year: "2023", title: "Started Journey", desc: "Began B.Tech CSE at PIEMR, Indore. Ignited passion for programming and problem-solving.", icon: GraduationCap },
+                { year: "2024", title: "Hackathon Win", desc: "2nd Runner-up at Urjotsav 2024. Built a full-stack College Management System with a team.", icon: Award },
+                { year: "2025", title: "Deep Dive", desc: "Mastering DSA, React, Node.js, and exploring AI-powered product development.", icon: Code2 },
+                { year: "2027", title: "Future Vision", desc: "Expected Graduation. Ready to build impactful products for the real world.", icon: Cpu },
               ].map((item, i) => (
-                <div key={i} className="relative flex items-start gap-6 md:justify-center group">
-                  <div className="hidden md:flex flex-1 justify-end text-right">
-                    {i % 2 === 0 && (
-                      <div>
-                        <h4 className="text-lg font-bold text-white">{item.title}</h4>
-                        <p className="text-sm text-gray-400 mt-1 max-w-sm">{item.desc}</p>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="relative z-10 w-10 h-10 flex items-center justify-center bg-[#090915] border border-primary rounded-full shadow-[0_0_10px_rgba(255,0,92,0.2)] group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="relative flex items-start gap-5 group"
+                >
+                  <div className="relative z-10 w-10 h-10 flex items-center justify-center bg-[#090915] border border-primary/60 rounded-full shadow-[0_0_12px_rgba(255,0,92,0.15)] group-hover:bg-primary group-hover:border-primary transition-all shrink-0">
                     <item.icon className="w-4 h-4 text-primary group-hover:text-white transition-colors" />
                   </div>
-                  
-                  <div className="flex-1 md:hidden">
-                    <span className="text-xs font-mono text-primary mb-1 block">{item.year}</span>
-                    <h4 className="text-lg font-bold text-white">{item.title}</h4>
-                    <p className="text-sm text-gray-400 mt-1">{item.desc}</p>
+                  <div className="flex-1 pb-2">
+                    <span className="text-xs font-mono text-primary/80 mb-0.5 block">{item.year}</span>
+                    <h4 className="text-base font-bold text-white group-hover:text-primary transition-colors">{item.title}</h4>
+                    <p className="text-sm text-gray-400 mt-1 leading-relaxed">{item.desc}</p>
                   </div>
-                  
-                  <div className="hidden md:flex flex-1 text-left">
-                    {i % 2 !== 0 && (
-                      <div>
-                        <h4 className="text-lg font-bold text-white">{item.title}</h4>
-                        <p className="text-sm text-gray-400 mt-1 max-w-sm">{item.desc}</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </div>
@@ -724,33 +718,128 @@ export default function Home() {
           <SectionHeading>Selected Works.</SectionHeading>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* ── College Management System ── */}
             {[
               {
                 title: "College Management System",
-                desc: "A responsive platform built with a team to manage academic & administrative tasks. Features student/teacher login, signup, marks display, feedback section, and advanced search. Improved UX engagement by 30%.",
+                desc: "A responsive platform built with a team to manage academic & administrative tasks. Features student/teacher login, marks display, feedback section, and advanced search. Improved UX engagement by 30%.",
                 tech: ["HTML", "CSS", "JavaScript"],
                 featured: true,
-                demo: "#",
-                color: "from-emerald-500/20 to-teal-900/20",
-                highlights: ["Student & Teacher Portals", "Marks Display", "Feedback System", "+30% UX Engagement"]
+                highlights: ["Student & Teacher Portals", "Marks Display", "Feedback System", "+30% Engagement"],
+                mockup: (
+                  <div className="h-48 w-full bg-gradient-to-br from-emerald-500/20 to-teal-900/20 relative border-b border-white/5 overflow-hidden select-none">
+                    <div className="absolute top-0 inset-x-0 h-6 bg-black/50 flex items-center px-2.5 gap-1.5 border-b border-white/5">
+                      <div className="w-2 h-2 rounded-full bg-red-400/70" /><div className="w-2 h-2 rounded-full bg-yellow-400/70" /><div className="w-2 h-2 rounded-full bg-green-400/70" />
+                      <div className="flex-1 mx-2 h-3 rounded bg-white/5 text-[7px] font-mono text-gray-600 flex items-center px-2">college-mgmt.edu</div>
+                    </div>
+                    <div className="absolute top-6 inset-x-0 bottom-0 flex">
+                      <div className="w-14 bg-black/30 border-r border-white/5 p-1.5 flex flex-col gap-1 pt-2">
+                        {[["🏠","Dashboard"],["👤","Students"],["📊","Marks"],["📝","Feedback"],["🔍","Search"]].map(([ico,lbl],j) => (
+                          <div key={j} className={`flex items-center gap-1 px-1 py-0.5 rounded text-[6px] font-mono ${j===0?'bg-emerald-500/20 text-emerald-400':'text-gray-600'}`}>
+                            <span>{ico}</span><span className="hidden">{lbl}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="flex-1 p-2">
+                        <div className="text-[7px] font-mono text-gray-500 mb-1.5 font-semibold">Student Records</div>
+                        <div className="flex gap-1.5 text-[6px] font-mono text-gray-600 border-b border-white/5 pb-0.5 mb-0.5">
+                          <span className="w-7">ID</span><span className="flex-1">Name</span><span>Grade</span>
+                        </div>
+                        {[["S001","Rahul K.","A+",true],["S002","Priya S.","B+",false],["S003","Amit R.","A",false],["S004","Neha M.","A+",false]].map(([id,name,grade,hi],j) => (
+                          <div key={j} className={`flex gap-1.5 text-[6px] font-mono py-0.5 border-b border-white/3 ${hi?'text-emerald-400/80':'text-gray-500'}`}>
+                            <span className="w-7">{id}</span><span className="flex-1">{name}</span><span>{grade}</span>
+                          </div>
+                        ))}
+                        <div className="mt-2 flex gap-1">
+                          <div className="bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-[6px] px-1.5 py-0.5 rounded font-mono">Login</div>
+                          <div className="bg-white/5 border border-white/10 text-gray-500 text-[6px] px-1.5 py-0.5 rounded font-mono">Signup</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="absolute top-8 right-2 bg-primary/90 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-lg">Featured</div>
+                  </div>
+                )
               },
               {
                 title: "Proximity Chat App",
-                desc: "A real-time location-based chat app enabling nearby user interactions. Tracks users via Geolocation API within a specified range and uses WebSockets for instant messaging between nearby users.",
+                desc: "A real-time location-based chat app that connects nearby users. Tracks users via Geolocation API within a set range and uses WebSockets for instant messaging.",
                 tech: ["HTML", "CSS", "JavaScript", "React", "WebSockets", "Geolocation API"],
                 featured: true,
-                demo: "#",
-                color: "from-violet-500/20 to-indigo-900/20",
-                highlights: ["Real-time Messaging", "Geolocation Tracking", "WebSocket Protocol", "System Design"]
+                highlights: ["Real-time Messaging", "Geolocation Tracking", "WebSocket Protocol", "Range-based Chat"],
+                mockup: (
+                  <div className="h-48 w-full bg-gradient-to-br from-violet-500/20 to-indigo-900/20 relative border-b border-white/5 overflow-hidden select-none">
+                    <div className="absolute top-0 inset-x-0 h-6 bg-black/50 flex items-center px-2.5 gap-1.5 border-b border-white/5">
+                      <div className="w-2 h-2 rounded-full bg-red-400/70" /><div className="w-2 h-2 rounded-full bg-yellow-400/70" /><div className="w-2 h-2 rounded-full bg-green-400/70" />
+                      <div className="flex-1 mx-2 h-3 rounded bg-white/5 text-[7px] font-mono text-gray-600 flex items-center px-2">proximity-chat.app</div>
+                    </div>
+                    <div className="absolute top-6 inset-x-0 bottom-0 flex">
+                      <div className="flex-1 p-2 flex flex-col gap-1">
+                        <div className="text-[7px] font-mono text-violet-400/80 mb-0.5 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />3 users nearby</div>
+                        <div className="self-end bg-violet-500/30 border border-violet-400/20 rounded-lg rounded-tr-none px-2 py-1 text-[7px] text-white/80 max-w-[80%]">Hey, anyone nearby? 👋</div>
+                        <div className="self-start bg-white/5 border border-white/10 rounded-lg rounded-tl-none px-2 py-1 text-[7px] text-white/70 max-w-[80%]">Yes! 200m from you!</div>
+                        <div className="self-end bg-violet-500/30 border border-violet-400/20 rounded-lg rounded-tr-none px-2 py-1 text-[7px] text-white/80 max-w-[80%]">WebSockets ⚡ so fast</div>
+                        <div className="self-start bg-white/5 border border-white/10 rounded-lg rounded-tl-none px-2 py-1 text-[7px] text-white/70 max-w-[80%]">Real-time 🗺️</div>
+                        <div className="mt-auto flex items-center gap-1 border border-white/10 rounded-full px-2 py-0.5 bg-black/20">
+                          <div className="flex-1 text-[6px] text-gray-600 font-mono">Type a message...</div>
+                          <div className="w-3 h-3 rounded-full bg-violet-500/60 flex items-center justify-center"><span className="text-[5px] text-white">▶</span></div>
+                        </div>
+                      </div>
+                      <div className="w-20 flex items-center justify-center border-l border-white/5">
+                        <div className="relative w-14 h-14">
+                          <div className="absolute inset-0 rounded-full border border-violet-400/15 animate-ping" style={{animationDuration:'2.5s'}} />
+                          <div className="absolute inset-2 rounded-full border border-violet-400/25" />
+                          <div className="absolute inset-4 rounded-full border border-violet-400/35" />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-2.5 h-2.5 rounded-full bg-violet-400 shadow-[0_0_8px_rgba(167,139,250,0.8)]" />
+                          </div>
+                          <div className="absolute top-0 right-1 w-1.5 h-1.5 rounded-full bg-blue-400/80" />
+                          <div className="absolute bottom-1 left-0 w-1.5 h-1.5 rounded-full bg-green-400/80" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="absolute top-8 right-2 bg-primary/90 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-lg">Featured</div>
+                  </div>
+                )
               },
               {
                 title: "Personal Portfolio",
-                desc: "This portfolio — designed and built from scratch with a premium dark theme, custom animations, background-removed photo integration, and interactive sections including skills, timeline, and contact form.",
+                desc: "This portfolio — designed and built from scratch with a premium dark theme, custom animations, background-removed photo, scroll progress bar, custom cursor, and interactive contact form.",
                 tech: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
                 featured: false,
-                demo: "#",
-                color: "from-primary/20 to-purple-900/20",
-                highlights: ["Custom Cursor", "Scroll Animations", "3D Tilt Cards", "Responsive"]
+                highlights: ["Custom Cursor + Glow", "Scroll Animations", "Hire Me Modal", "Fully Responsive"],
+                mockup: (
+                  <div className="h-48 w-full bg-gradient-to-br from-primary/20 to-purple-900/20 relative border-b border-white/5 overflow-hidden select-none">
+                    <div className="absolute top-0 inset-x-0 h-6 bg-black/50 flex items-center px-2.5 gap-1.5 border-b border-white/5">
+                      <div className="w-2 h-2 rounded-full bg-red-400/70" /><div className="w-2 h-2 rounded-full bg-yellow-400/70" /><div className="w-2 h-2 rounded-full bg-green-400/70" />
+                      <div className="flex-1 mx-2 h-3 rounded bg-white/5 text-[7px] font-mono text-gray-600 flex items-center px-2">chirag-verma.dev</div>
+                    </div>
+                    <div className="absolute top-6 inset-x-0 h-5 bg-black/30 border-b border-white/5 flex items-center px-3 justify-between">
+                      <div className="text-[8px] font-mono font-bold text-white">CV <span className="text-primary">//</span> CHIRAG</div>
+                      <div className="flex gap-2 items-center">
+                        {["About","Skills","Projects"].map(l=><span key={l} className="text-[6px] text-gray-500">{l}</span>)}
+                        <div className="text-[6px] text-primary border border-primary/40 px-1 py-0.5 rounded-full">Hire Me</div>
+                      </div>
+                    </div>
+                    <div className="absolute top-11 inset-x-0 bottom-0 flex items-center px-4 gap-4">
+                      <div className="flex-1">
+                        <div className="flex gap-1 mb-1">
+                          <div className="text-[7px] font-mono bg-white/5 border border-white/10 px-1.5 py-0.5 rounded-full text-gray-400 flex items-center gap-1"><span className="w-1 h-1 rounded-full bg-primary animate-pulse inline-block" />CSE Student</div>
+                          <div className="text-[7px] font-mono bg-green-500/10 border border-green-500/30 px-1.5 py-0.5 rounded-full text-green-400 flex items-center gap-1"><span className="w-1 h-1 rounded-full bg-green-400 animate-pulse inline-block" />Open to Work</div>
+                        </div>
+                        <div className="text-[16px] font-display font-bold text-white leading-none">Chirag</div>
+                        <div className="text-[16px] font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-pink-400 leading-none">Verma.</div>
+                        <div className="flex gap-1 mt-1.5">
+                          <div className="bg-primary text-white text-[6px] px-2 py-0.5 rounded-full">View Projects</div>
+                          <div className="border border-white/20 text-white/50 text-[6px] px-2 py-0.5 rounded-full">Resume</div>
+                          <div className="border border-white/10 text-white/30 text-[6px] w-4 h-3.5 rounded-full flex items-center justify-center">↗</div>
+                        </div>
+                      </div>
+                      <div className="w-16 h-20 rounded-xl bg-gradient-to-b from-white/5 to-transparent border border-white/10 flex items-end justify-center overflow-hidden">
+                        <div className="w-10 h-16 bg-gradient-to-b from-gray-300/20 to-gray-500/10 rounded-t-full" />
+                      </div>
+                    </div>
+                  </div>
+                )
               }
             ].map((project, i) => (
               <motion.div 
@@ -760,45 +849,129 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2 }}
                 className="group relative"
-                style={{ perspective: "1000px" }}
               >
-                <div className="h-full bg-[#0a0a14] border border-white/10 rounded-2xl overflow-hidden transition-all duration-500 group-hover:border-primary/50 group-hover:shadow-[0_10px_40px_rgba(255,0,92,0.15)] flex flex-col hover:-translate-y-2">
-                  
-                  {/* Image Placeholder */}
-                  <div className={`h-48 w-full bg-gradient-to-br ${project.color} relative border-b border-white/5 flex items-center justify-center overflow-hidden`}>
-                    <div className="absolute inset-0 bg-grid opacity-30" />
-                    <Terminal className="w-12 h-12 text-white/20" />
-                    {project.featured && (
-                      <div className="absolute top-4 right-4 bg-primary/90 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg backdrop-blur-sm">
-                        Featured
-                      </div>
-                    )}
-                  </div>
-                  
+                <div className="h-full bg-[#0a0a14] border border-white/10 rounded-2xl overflow-hidden transition-all duration-500 group-hover:border-primary/50 group-hover:shadow-[0_10px_40px_rgba(255,0,92,0.12)] flex flex-col hover:-translate-y-2">
+                  {project.mockup}
                   <div className="p-6 flex-1 flex flex-col">
-                    <h3 className="text-2xl font-display font-bold text-white mb-3 group-hover:text-primary transition-colors">{project.title}</h3>
-                    <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">{project.desc}</p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    <h3 className="text-xl font-display font-bold text-white mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-5 flex-1">{project.desc}</p>
+                    <div className="flex flex-wrap gap-2 mb-4">
                       {project.tech.map((t, j) => (
-                        <span key={j} className="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded">
+                        <span key={j} className="text-xs font-mono text-primary bg-primary/10 px-2 py-0.5 rounded">
                           {t}
                         </span>
                       ))}
                     </div>
-                    
-                    <div className="flex items-center gap-4 mt-auto pt-4 border-t border-white/5">
-                      <a href="https://www.linkedin.com/in/chirag-verma-cse" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 text-sm font-medium">
-                        <Linkedin className="w-4 h-4" /> LinkedIn
-                      </a>
-                      <a href={project.demo} className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 text-sm font-medium ml-auto">
-                        Live Demo <ExternalLink className="w-4 h-4" />
-                      </a>
+                    <div className="pt-4 border-t border-white/5 flex flex-wrap gap-2">
+                      {project.highlights.map((h, j) => (
+                        <span key={j} className="text-[11px] font-mono text-gray-500 bg-white/5 px-2 py-0.5 rounded-full border border-white/5">
+                          ✦ {h}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
               </motion.div>
             ))}
+          </div>
+        </section>
+
+        {/* EDUCATION SECTION */}
+        <section className="py-24 scroll-mt-20">
+          <SectionHeading>Education.</SectionHeading>
+          <div className="grid md:grid-cols-2 gap-8 items-start">
+            {/* Main education card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-[#0a0a14] border border-white/10 rounded-2xl p-8 hover:border-primary/30 transition-colors group relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-full blur-[60px]" />
+              <div className="relative z-10">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="w-14 h-14 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                    <GraduationCap className="w-7 h-7 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-display font-bold text-white group-hover:text-primary transition-colors">B.Tech — Computer Science & Engineering</h3>
+                    <p className="text-gray-400 text-sm mt-0.5">Prestige Institute of Engg. Management & Research (PIEMR)</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-4 mb-6 text-sm">
+                  <div className="flex items-center gap-2 text-gray-400">
+                    <MapPin className="w-4 h-4 text-primary/60" />
+                    <span>Indore, Madhya Pradesh</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-400">
+                    <GraduationCap className="w-4 h-4 text-primary/60" />
+                    <span>2023 – 2027 (Expected)</span>
+                  </div>
+                </div>
+                <div className="w-full bg-white/5 rounded-full h-1.5 mb-2 overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: '50%' }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
+                    className="h-full bg-gradient-to-r from-primary to-pink-400 rounded-full"
+                  />
+                </div>
+                <div className="flex justify-between text-xs font-mono text-gray-600 mb-6">
+                  <span>Year 1</span><span className="text-primary/70">← 3rd Year (Current)</span><span>Year 4</span>
+                </div>
+                <div>
+                  <p className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-3">Relevant Coursework</p>
+                  <div className="flex flex-wrap gap-2">
+                    {["Data Structures & Algorithms","Object-Oriented Programming","Database Management Systems","Operating Systems","Computer Networks","Web Technologies","Discrete Mathematics","Software Engineering"].map((c) => (
+                      <span key={c} className="text-xs font-mono text-gray-400 bg-white/5 border border-white/5 px-2.5 py-1 rounded-lg hover:border-primary/30 hover:text-primary/80 transition-colors">
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Achievements + extras */}
+            <div className="flex flex-col gap-4">
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="bg-primary/5 border border-primary/20 rounded-2xl p-6 hover:bg-primary/10 transition-colors"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <Award className="w-5 h-5 text-primary" />
+                  <h4 className="font-bold text-white">Hackathon Achievement</h4>
+                </div>
+                <p className="text-sm text-gray-400">2nd Runner-up at <span className="text-white">Urjotsav 2024</span> — PIEMR's annual Website Design Competition. Built a full-stack College Management System in a team.</p>
+              </motion.div>
+
+              {[
+                { title: "Active Coding Practice", desc: "Solving DSA problems regularly — focusing on arrays, trees, graphs, and DP.", icon: Terminal, color: "text-cyan-400" },
+                { title: "Club & Community", desc: "Actively participating in college tech events, workshops, and inter-college competitions.", icon: Briefcase, color: "text-violet-400" },
+                { title: "Self-Learning", desc: "Completed 6+ certifications from Infosys Springboard, MathWorks, and Microsoft.", icon: Code2, color: "text-emerald-400" },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.15 + i * 0.1 }}
+                  className="bg-white/5 border border-white/5 rounded-xl p-5 flex items-start gap-4 hover:border-white/10 transition-colors"
+                >
+                  <div className={`mt-0.5 shrink-0 ${item.color}`}>
+                    <item.icon className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white text-sm mb-1">{item.title}</h4>
+                    <p className="text-xs text-gray-400 leading-relaxed">{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -898,20 +1071,21 @@ export default function Home() {
                 <form onSubmit={handleContactSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-400">Name</label>
-                    <Input required placeholder="John Doe" className="bg-white/5 border-white/10 focus-visible:border-primary text-white" />
+                    <Input required value={formName} onChange={e => setFormName(e.target.value)} placeholder="Your name" className="bg-white/5 border-white/10 focus-visible:border-primary text-white placeholder:text-gray-600" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-400">Email</label>
-                    <Input required type="email" placeholder="john@example.com" className="bg-white/5 border-white/10 focus-visible:border-primary text-white" />
+                    <Input required type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)} placeholder="your@email.com" className="bg-white/5 border-white/10 focus-visible:border-primary text-white placeholder:text-gray-600" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-400">Message</label>
-                    <Textarea required placeholder="What's on your mind?" className="bg-white/5 border-white/10 focus-visible:border-primary text-white min-h-[120px] resize-none" />
+                    <Textarea required value={formMessage} onChange={e => setFormMessage(e.target.value)} placeholder="What's on your mind?" className="bg-white/5 border-white/10 focus-visible:border-primary text-white min-h-[120px] resize-none placeholder:text-gray-600" />
                   </div>
                   <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-6 rounded-xl mt-4 group">
-                    Send Message 
+                    Open in Email Client
                     <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
+                  <p className="text-center text-xs text-gray-600 font-mono">Opens your email client with the message pre-filled</p>
                 </form>
               </div>
             </div>
