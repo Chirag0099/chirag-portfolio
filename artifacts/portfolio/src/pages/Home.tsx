@@ -407,30 +407,21 @@ export default function Home() {
             {[
               {
                 title: "College Management System",
-                desc: "A dynamic full-stack platform for managing academic and administrative tasks. Features student/teacher portals, marks display, and feedback system.",
-                tech: ["React", "Node.js", "Express", "MongoDB"],
+                desc: "A dynamic full-stack platform built with a team to manage academic and administrative tasks. Features student & teacher login/signup, marks display, feedback section, and informational pages — About College, Placements, and Contact Us.",
+                tech: ["MongoDB", "Express.js", "React", "Node.js"],
                 featured: true,
-                github: "#",
                 demo: "#",
-                color: "from-emerald-500/20 to-teal-900/20"
+                color: "from-emerald-500/20 to-teal-900/20",
+                highlights: ["Student & Teacher Portals", "Marks Display", "Feedback System", "Responsive Design"]
               },
               {
-                title: "Chirag Portfolio v1",
-                desc: "This premium portfolio built with React, Vite, and Tailwind CSS. Features custom animations, 3D tilt effects, and an intentional design system.",
-                tech: ["React", "TypeScript", "Tailwind", "Framer"],
+                title: "Personal Portfolio",
+                desc: "This portfolio — designed and built from scratch with a premium dark theme, custom animations, background-removed photo integration, and interactive sections including skills, timeline, and contact form.",
+                tech: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
                 featured: true,
-                github: "#",
                 demo: "#",
-                color: "from-primary/20 to-purple-900/20"
-              },
-              {
-                title: "DSA Practice Tracker",
-                desc: "A robust personal tool to track algorithmic problem-solving progress. Includes difficulty tagging, streak tracking, and topic-wise analytics dashboards.",
-                tech: ["React", "TypeScript", "Local Storage", "Recharts"],
-                featured: false,
-                github: "#",
-                demo: "#",
-                color: "from-blue-500/20 to-cyan-900/20"
+                color: "from-primary/20 to-purple-900/20",
+                highlights: ["Custom Cursor", "Scroll Animations", "3D Tilt Cards", "Responsive"]
               }
             ].map((project, i) => (
               <motion.div 
